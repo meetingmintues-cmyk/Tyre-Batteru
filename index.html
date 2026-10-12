@@ -1119,8 +1119,6 @@ function renderVertical(v){
     ${kpi({label:'Best Branch', raw:best && best[VV.a]>0 ? esc(best.name) : '—', icon:'branch', color:VV.col, foot: best && best[VV.a]>0 ? `${fmt(best[VV.a])} units · ${fmtPct(best[VV.a],best[VV.c])}`:'no sales yet', delay:360})}
   </div>
 
-  <div class="card mt reveal"><div class="card-head"><div><h3>Daily Commitment vs Achievement</h3><div class="sub">Bars = units, line = achievement %</div></div></div><div class="chart-box"><canvas id="${v}Daily"></canvas></div></div>
-
   <div class="card mt reveal mx">${matrixShell(v,'📋 Day-wise '+VV.name+' Commitment vs Achievement','Total AM Group, clusters and zones — switch to branch-wise for every branch')}</div>
 
   <div class="grid g3 mt">
@@ -1137,27 +1135,15 @@ function renderVertical(v){
     </div>
   </div>
 
-  <div class="grid g2 mt">
-    <div class="card reveal"><div class="card-head"><div><h3>Zone Comparison</h3><div class="sub">Commitment vs achievement by zone</div></div></div><div class="chart-box"><canvas id="${v}Zone"></canvas></div></div>
+  <div class="grid mt">
     <div class="card reveal"><div class="card-head"><div><h3>Zone Scorecards</h3><div class="sub">Progress toward commitment</div></div></div>
       <div class="zc">${zones.map(z=>`<div class="zc-h"><b style="color:${ZCOL[z.zone]}">Zone ${z.zone} <span class="tag">Cluster ${z.cluster}</span></b><span>${pillStatus(z[VV.a],z[VV.c])}</span></div>
         <div class="zc-row"><span>${fmt(z[VV.a])} / ${fmt(z[VV.c])}</span><div class="bar"><i data-w="${Math.min(100,pct(z[VV.a],z[VV.c])||0)}%" style="background:${ZCOL[z.zone]}"></i></div><span>${fmtPct(z[VV.a],z[VV.c])}</span></div>`).join('')}</div></div>
   </div>
 
-  <div class="card mt reveal"><div class="card-head"><div><h3>Branch Ranking</h3><div class="sub">Achievement vs commitment for every branch — click a bar to drill down</div></div>
-    <div class="seg" id="${v}RankSeg"><button class="on" data-m="a">By units</button><button data-m="p">By %</button><button data-m="g">By gap</button></div></div>
-    <div class="chart-box" id="${v}RankBox" style="height:${Math.max(320, br.length*26+60)}px"><canvas id="${v}Rank"></canvas></div></div>
-
   <div class="card mt reveal">${tableShell(v, VV.name+' Branch Table', 'Grouped by zone · sortable · exportable')}</div>`;
 
   // daily chart
-  mk(v+'Daily',{data:{labels:days.map(d=>shortD(d.key)),datasets:[
-    {type:'bar',label:'Commitment',data:days.map(d=>d[VV.c]),backgroundColor:hexA(c.commit,.35),borderColor:c.commit,borderWidth:1.5,borderRadius:6,maxBarThickness:38,order:2},
-    {type:'bar',label:'Achievement',data:days.map(d=>d[VV.a]),backgroundColor:ctx=>grad(ctx,col,.95,.55),borderRadius:6,maxBarThickness:38,order:2},
-    {type:'line',label:'Ach %',data:days.map(d=>pct(d[VV.a],d[VV.c])),yAxisID:'y1',borderColor:c.text,backgroundColor:c.text,pointRadius:4,tension:.35,borderWidth:2,spanGaps:true,order:1}]},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{tooltip:{callbacks:{label:x=>x.dataset.yAxisID==='y1'?` Ach %: ${x.raw===null?'—':Math.round(x.raw)+'%'}`:` ${x.dataset.label}: ${fmt(x.raw)}`}}},
-      scales:{y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Units'}},y1:{position:'right',beginAtZero:true,grid:{display:false},ticks:{callback:x=>x+'%'}},x:{grid:{display:false}}}}});
   if(fc) mk(v+'Fc',{type:'line',data:{labels:fc.labels.map(shortD),datasets:[
     {label:'Actual (cumulative)',data:fc.act,borderColor:col,backgroundColor:ctx=>grad(ctx,col,.3),fill:true,tension:.3,pointRadius:2.5,borderWidth:3},
     {label:'Forecast',data:fc.proj,borderColor:col,borderDash:[7,5],pointRadius:0,tension:.3,borderWidth:2.5,spanGaps:true},
@@ -1167,22 +1153,6 @@ function renderVertical(v){
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{labels:{filter:i=>!['High','Low'].includes(i.text)}},tooltip:{filter:i=>!['High','Low'].includes(i.dataset.label),callbacks:{label:x=>x.raw===null?null:` ${x.dataset.label}: ${fmt(Math.round(x.raw*10)/10)}`}}},
       scales:{y:{beginAtZero:true},x:{grid:{display:false},ticks:{maxTicksLimit:12}}}}});
-  mk(v+'Zone',{type:'bar',data:{labels:zones.map(z=>'Zone '+z.zone),datasets:[
-    {label:'Commitment',data:zones.map(z=>z[VV.c]),backgroundColor:hexA(c.commit,.35),borderColor:c.commit,borderWidth:1.5,borderRadius:8,maxBarThickness:46},
-    {label:'Achievement',data:zones.map(z=>z[VV.a]),backgroundColor:zones.map(z=>ZCOL[z.zone]),borderRadius:8,maxBarThickness:46}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{afterBody:x=>{ const z = zones[x[0].dataIndex]; return `Achievement: ${fmtPct(z[VV.a],z[VV.c])}`; }}}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}}}});
-  const drawRank = m => {
-    const arr = br.map(b=>({...b, A:b[VV.a], C:b[VV.c], P:pct(b[VV.a],b[VV.c]), G:b[VV.a]-b[VV.c]}));
-    arr.sort(m==='p' ? (x,y)=>(y.P??(y.A>0?1e9:-1))-(x.P??(x.A>0?1e9:-1)) : m==='g' ? (x,y)=>y.G-x.G : (x,y)=>y.A-x.A || y.C-x.C);
-    mk(v+'Rank',{type:'bar',data:{labels:arr.map(b=>b.label),datasets:[
-      {label:'Commitment',data:arr.map(b=>b.C),backgroundColor:hexA(c.commit,.3),borderColor:c.commit,borderWidth:1,borderRadius:5,barPercentage:.9,categoryPercentage:.75},
-      {label:'Achievement',data:arr.map(b=>b.A),backgroundColor:arr.map(b=>statusCol(status(b.A,b.C).k)||col),borderRadius:5,barPercentage:.9,categoryPercentage:.75}]},
-      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,onClick:(e,els)=>{ if(els.length) openBranch(arr[els[0].index].code); },
-        plugins:{tooltip:{callbacks:{afterBody:x=>{ const b = arr[x[0].dataIndex]; return `Ach: ${fmtPct(b.A,b.C)} · Gap ${b.G>=0?'+':''}${fmt(b.G)} · Zone ${b.zone}`; }}}},
-        scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
-  };
-  drawRank('a');
-  $('#'+v+'RankSeg').onclick = e => { const b = e.target.closest('button'); if(!b) return; $$('#'+v+'RankSeg button').forEach(x=>x.classList.toggle('on',x===b)); drawRank(b.dataset.m); };
   buildTable(v, br, v);
   buildMatrix(v, [v]);
   bindBranchLinks(el); animateIn(el);
