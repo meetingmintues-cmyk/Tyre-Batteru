@@ -272,6 +272,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .l-theme .i-sun{display:none}
 :root[data-theme="dark"] .l-theme .i-sun{display:block}:root[data-theme="dark"] .l-theme .i-moon{display:none}
 /* ---- LIGHT landing ---- */
+.ins-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px}
 /* ====================== DAY MATRIX ====================== */
 .mx-wrap{max-height:640px}
 .mx table{font-size:12px;border-collapse:separate;border-spacing:0}
@@ -1025,12 +1026,7 @@ function renderOverview(){
 
   <div class="card mt reveal mx">${matrixShell('ov','📋 Day-wise Commitment vs Achievement','Battery & Tyre · Total AM Group, clusters and zones — switch to branch-wise for every branch')}</div>
 
-  <div class="grid g3 mt">
-    <div class="card span2 reveal"><div class="card-head"><div><h3>Daily Performance Trend</h3><div class="sub">Achievement bars vs commitment lines, both verticals</div></div>
-      <div class="seg" id="trendSeg"><button class="on" data-m="daily">Daily</button><button data-m="cum">Cumulative</button></div></div>
-      <div class="chart-box"><canvas id="ovTrend"></canvas></div></div>
-    <div class="card reveal"><div class="card-head"><div><h3>Auto Insights</h3><div class="sub">What the numbers are saying</div></div></div><div class="ins" id="ovIns"></div></div>
-  </div>
+    <div class="card mt reveal"><div class="card-head"><div><h3>Auto Insights</h3><div class="sub">What the numbers are saying</div></div></div><div class="ins ins-grid" id="ovIns"></div></div>
 
   <div class="grid g2 mt">
     ${cls.map((cl,i)=>`<div class="card reveal" style="animation-delay:${i*80}ms"><div class="card-head"><div><h3>Cluster ${cl.cluster}</h3><div class="sub">${cl.zones.map(z=>'Zone '+z).join(' + ')} · ${Object.values(BMAP).filter(b=>b.cluster===cl.cluster).length} branches</div></div>
@@ -1042,10 +1038,6 @@ function renderOverview(){
         <div class="zc-row"><span>Battery</span><div class="bar"><i data-w="${Math.min(100,pct(zz.ba,zz.bc)||0)}%" style="background:${c.bat}"></i></div><span>${fmtPct(zz.ba,zz.bc)}</span></div>`; }).join('')}</div></div></div>`).join('')}
   </div>
 
-  <div class="grid g3 mt">
-    <div class="card span2 reveal"><div class="card-head"><div><h3>Zone Performance</h3><div class="sub">Achievement % by zone — dashed line marks 100% target</div></div></div><div class="chart-box"><canvas id="ovZone"></canvas></div></div>
-    <div class="card reveal"><div class="card-head"><div><h3>Zone Balance Radar</h3><div class="sub">Tyre vs battery achievement %</div></div></div><div class="chart-box"><canvas id="ovRadar"></canvas></div></div>
-  </div>
 
   <div class="grid g2 mt">
     <div class="card reveal"><div class="card-head"><div><h3>🏆 Top Performers</h3><div class="sub">Ranked by combined units achieved</div></div></div><div class="lb" id="lbTop"></div></div>
@@ -1059,30 +1051,6 @@ function renderOverview(){
     mk('spark-'+v,{type:'line',data:{labels:days.map(d=>shortD(d.key)),datasets:[{data:days.map(d=>d[VV.a]),borderColor:col,backgroundColor:ctx=>grad(ctx,col,.35),fill:true,tension:.4,pointRadius:0,borderWidth:2.5},{data:days.map(d=>d[VV.c]),borderColor:c.commit,borderDash:[4,4],pointRadius:0,borderWidth:1.5,tension:.4}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false,beginAtZero:true}}}});
   });
-  const drawTrend = mode => {
-    let ta=0,tc=0,ba=0,bc=0; const cum = days.map(d=>({ta:ta+=d.ta,tc:tc+=d.tc,ba:ba+=d.ba,bc:bc+=d.bc}));
-    const src = mode==='cum'? cum : days;
-    mk('ovTrend',{data:{labels:days.map(d=>shortD(d.key)),datasets:[
-      {type:'bar',label:'Tyre achieved',data:src.map(d=>d.ta),backgroundColor:hexA(c.tyre,.85),borderRadius:6,maxBarThickness:34},
-      {type:'bar',label:'Battery achieved',data:src.map(d=>d.ba),backgroundColor:hexA(c.bat,.85),borderRadius:6,maxBarThickness:34},
-      {type:'line',label:'Tyre commitment',data:src.map(d=>d.tc),borderColor:c.tyre,borderDash:[6,4],pointRadius:3,pointBackgroundColor:c.tyre,tension:.2,borderWidth:2},
-      {type:'line',label:'Battery commitment',data:src.map(d=>d.bc),borderColor:c.bat,borderDash:[6,4],pointRadius:3,pointBackgroundColor:c.bat,tension:.2,borderWidth:2}]},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}}}});
-  };
-  drawTrend('daily');
-  $('#trendSeg').onclick = e => { const b = e.target.closest('button'); if(!b) return; $$('#trendSeg button').forEach(x=>x.classList.toggle('on',x===b)); drawTrend(b.dataset.m); };
-
-  const zl = zones.map(z=>'Zone '+z.zone);
-  mk('ovZone',{data:{labels:zl,datasets:[
-    {type:'bar',label:'Tyre %',data:zones.map(z=>pct(z.ta,z.tc)??0),backgroundColor:hexA(c.tyre,.85),borderRadius:8,maxBarThickness:46},
-    {type:'bar',label:'Battery %',data:zones.map(z=>pct(z.ba,z.bc)??0),backgroundColor:hexA(c.bat,.85),borderRadius:8,maxBarThickness:46},
-    {type:'line',label:'Target 100%',data:zones.map(()=>100),borderColor:c.muted,borderDash:[5,5],pointRadius:0,borderWidth:1.5}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:x=>{ const z = zones[x.dataIndex]; if(x.datasetIndex===0) return ` Tyre: ${fmt(z.ta)}/${fmt(z.tc)} (${fmtPct(z.ta,z.tc)})`; if(x.datasetIndex===1) return ` Battery: ${fmt(z.ba)}/${fmt(z.bc)} (${fmtPct(z.ba,z.bc)})`; return ' Target 100%'; }}}},
-      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
-  mk('ovRadar',{type:'radar',data:{labels:zl,datasets:[
-    {label:'Tyre %',data:zones.map(z=>Math.min(300,pct(z.ta,z.tc)??0)),borderColor:c.tyre,backgroundColor:hexA(c.tyre,.2),pointBackgroundColor:c.tyre,borderWidth:2},
-    {label:'Battery %',data:zones.map(z=>Math.min(300,pct(z.ba,z.bc)??0)),borderColor:c.bat,backgroundColor:hexA(c.bat,.2),pointBackgroundColor:c.bat,borderWidth:2}]},
-    options:{responsive:true,maintainAspectRatio:false,scales:{r:{beginAtZero:true,angleLines:{color:cssv('--grid')},grid:{color:cssv('--grid')},pointLabels:{color:c.text,font:{family:'Outfit',size:12,weight:'700'}},ticks:{backdropColor:'transparent',callback:v=>v+'%'}}}}});
 
   // leaderboards
   const ranked = br.map(b=>({...b, A:b.ta+b.ba, C:b.tc+b.bc})).sort((x,y)=>y.A-x.A || (pct(y.A,y.C)??0)-(pct(x.A,x.C)??0));
@@ -1151,11 +1119,7 @@ function renderVertical(v){
     ${kpi({label:'Best Branch', raw:best && best[VV.a]>0 ? esc(best.name) : '—', icon:'branch', color:VV.col, foot: best && best[VV.a]>0 ? `${fmt(best[VV.a])} units · ${fmtPct(best[VV.a],best[VV.c])}`:'no sales yet', delay:360})}
   </div>
 
-  <div class="grid g3 mt">
-    <div class="card span2 reveal"><div class="card-head"><div><h3>Daily Commitment vs Achievement</h3><div class="sub">Bars = units, line = achievement %</div></div></div><div class="chart-box"><canvas id="${v}Daily"></canvas></div></div>
-    <div class="card reveal"><div class="card-head"><div><h3>Cluster Share</h3><div class="sub">Achieved units by cluster</div></div></div><div class="chart-box short"><canvas id="${v}Cluster"></canvas></div>
-      <div class="lb mt">${cls.map(x=>`<div class="lb-row" style="cursor:default"><span class="lb-rank">C${x.cluster}</span><div class="lb-name">Cluster ${x.cluster}<small>${x.zones.map(z=>'Zone '+z).join(' + ')}</small></div><div class="lb-val">${fmtPct(x[VV.a],x[VV.c])}<small>${fmt(x[VV.a])} / ${fmt(x[VV.c])}</small></div></div>`).join('')}</div></div>
-  </div>
+  <div class="card mt reveal"><div class="card-head"><div><h3>Daily Commitment vs Achievement</h3><div class="sub">Bars = units, line = achievement %</div></div></div><div class="chart-box"><canvas id="${v}Daily"></canvas></div></div>
 
   <div class="card mt reveal mx">${matrixShell(v,'📋 Day-wise '+VV.name+' Commitment vs Achievement','Total AM Group, clusters and zones — switch to branch-wise for every branch')}</div>
 
@@ -1184,10 +1148,6 @@ function renderVertical(v){
     <div class="seg" id="${v}RankSeg"><button class="on" data-m="a">By units</button><button data-m="p">By %</button><button data-m="g">By gap</button></div></div>
     <div class="chart-box" id="${v}RankBox" style="height:${Math.max(320, br.length*26+60)}px"><canvas id="${v}Rank"></canvas></div></div>
 
-  <div class="card mt reveal"><div class="card-head"><div><h3>Daily Heatmap</h3><div class="sub">Achieved / committed per branch per day</div></div>
-    <div class="legend"><span><i style="background:var(--good)"></i>≥100%</span><span><i style="background:var(--warn)"></i>75–99%</span><span><i style="background:var(--bad)"></i>&lt;75%</span><span><i style="background:var(--bonus)"></i>Bonus</span><span><i style="background:var(--panel2);border:1px solid var(--line)"></i>No activity</span></div></div>
-    <div class="tbl-wrap" style="border:none">${heatmap(recs, v)}</div></div>
-
   <div class="card mt reveal">${tableShell(v, VV.name+' Branch Table', 'Grouped by zone · sortable · exportable')}</div>`;
 
   // daily chart
@@ -1198,8 +1158,6 @@ function renderVertical(v){
     options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{tooltip:{callbacks:{label:x=>x.dataset.yAxisID==='y1'?` Ach %: ${x.raw===null?'—':Math.round(x.raw)+'%'}`:` ${x.dataset.label}: ${fmt(x.raw)}`}}},
       scales:{y:{beginAtZero:true,ticks:{precision:0},title:{display:true,text:'Units'}},y1:{position:'right',beginAtZero:true,grid:{display:false},ticks:{callback:x=>x+'%'}},x:{grid:{display:false}}}}});
-  mk(v+'Cluster',{type:'doughnut',data:{labels:cls.map(x=>'Cluster '+x.cluster),datasets:[{data:cls.map(x=>Math.max(0,x[VV.a])),backgroundColor:[col,c.commit],borderColor:cssv('--panel'),borderWidth:4,hoverOffset:10}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom'}}}});
   if(fc) mk(v+'Fc',{type:'line',data:{labels:fc.labels.map(shortD),datasets:[
     {label:'Actual (cumulative)',data:fc.act,borderColor:col,backgroundColor:ctx=>grad(ctx,col,.3),fill:true,tension:.3,pointRadius:2.5,borderWidth:3},
     {label:'Forecast',data:fc.proj,borderColor:col,borderDash:[7,5],pointRadius:0,tension:.3,borderWidth:2.5,spanGaps:true},
