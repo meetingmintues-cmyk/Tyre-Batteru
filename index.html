@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,13 +20,6 @@
   --good:#12a46b; --warn:#e8a200; --bad:#e5383b; --bonus:#8b5cf6; --idle:#9aa3bd;
   --shadow:0 10px 30px rgba(20,30,70,.08); --glass:rgba(255,255,255,.75);
   --radius:18px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#070b18; --bg2:#0c1226; --panel:#10172e; --panel2:#141d38; --line:#1f2a4a; --grid:rgba(160,180,255,.08);
-    --text:#eef1fb; --muted:#9aa6c9; --faint:#5f6b90;
-    --tyre:#ff7a3d; --bat:#1fd394; --commit:#6f8cff; --shadow:0 14px 40px rgba(0,0,0,.35); --glass:rgba(16,23,46,.72);
-  }
 }
 :root[data-theme="dark"]{
   --bg:#070b18; --bg2:#0c1226; --panel:#10172e; --panel2:#141d38; --line:#1f2a4a; --grid:rgba(160,180,255,.08);
@@ -273,6 +266,36 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .lt-ask b{font-family:Outfit;font-size:44px;font-weight:900;line-height:1}
 .lt-ask span{flex-basis:100%;font-size:11.5px;color:rgba(255,255,255,.65)}.lt-ask span b{font-size:12px;color:#fff;font-family:Inter}
 .credit{font-weight:700;color:rgba(255,255,255,.75)}.credit b{background:linear-gradient(90deg,#ff7a3d,#ed1c24,#6f8cff);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:Outfit;font-weight:900;letter-spacing:.3px}
+/* theme toggle on landing */
+.l-theme{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;transition:.2s}
+.l-theme:hover{transform:translateY(-2px)}.l-theme svg{width:19px;height:19px}
+.l-theme .i-sun{display:none}
+:root[data-theme="dark"] .l-theme .i-sun{display:block}:root[data-theme="dark"] .l-theme .i-moon{display:none}
+/* ---- LIGHT landing ---- */
+:root[data-theme="light"] .landing{background:radial-gradient(1100px 600px at 5% -10%,rgba(46,49,146,.16),transparent 60%),radial-gradient(900px 600px at 110% 15%,rgba(237,28,36,.13),transparent 60%),linear-gradient(180deg,#f7f8fd,#eef1f9);color:#0d1430}
+:root[data-theme="light"] .landing::before{background-image:linear-gradient(rgba(20,30,80,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,30,80,.05) 1px,transparent 1px)}
+:root[data-theme="light"] .l-logo{box-shadow:0 12px 34px rgba(30,40,100,.15)}
+:root[data-theme="light"] .l-clock{color:#5d6788}:root[data-theme="light"] .l-clock b{color:#0d1430}
+:root[data-theme="light"] .l-theme{background:#fff;border-color:#e2e7f1;color:#2e3192;box-shadow:0 6px 18px rgba(30,40,100,.1)}
+:root[data-theme="light"] .l-kicker{background:#fff;border-color:#e2e7f1;color:#2e3192;box-shadow:0 4px 14px rgba(30,40,100,.06)}
+:root[data-theme="light"] .l-title .tw{background:linear-gradient(90deg,#f05a1a,#ff8a3d);-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] .l-title .bw{background:linear-gradient(90deg,#0f9e68,#16c784);-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] .l-desc{color:#4a5475}
+:root[data-theme="light"] .l-stat,:root[data-theme="light"] .l-today{background:#fff;border-color:#e2e7f1;box-shadow:0 10px 30px rgba(30,40,100,.07)}
+:root[data-theme="light"] .l-stat small,:root[data-theme="light"] .lt-row small{color:#6b7594}
+:root[data-theme="light"] .l-today .lt-h{color:#5d6788}:root[data-theme="light"] .l-today .lt-h b{color:#0d1430}
+:root[data-theme="light"] .lt-card{background:#f5f7fc;border-color:#e2e7f1}
+:root[data-theme="light"] .lt-ask span,:root[data-theme="light"] .lt-mtd{color:#5d6788}
+:root[data-theme="light"] .lt-ask span b,:root[data-theme="light"] .lt-mtd b{color:#0d1430}
+:root[data-theme="light"] .lt-ask b[style*="#ff9a63"]{color:#f05a1a!important}:root[data-theme="light"] .lt-ask b[style*="#4fe3ad"]{color:#0f9e68!important}
+:root[data-theme="light"] .l-go{background:#fff;border-color:#e2e7f1;color:#0d1430;box-shadow:0 8px 22px rgba(30,40,100,.07)}
+:root[data-theme="light"] .l-go small{color:#6b7594}
+:root[data-theme="light"] .l-go.main{background:linear-gradient(135deg,#ed1c24,#2e3192);color:#fff;border:none}:root[data-theme="light"] .l-go.main small{color:rgba(255,255,255,.75)}
+:root[data-theme="light"] .showcase{border-color:#e2e7f1;box-shadow:0 30px 70px rgba(30,40,100,.22)}
+:root[data-theme="light"] .float-badge{background:rgba(255,255,255,.95);border-color:#e2e7f1;color:#0d1430;box-shadow:0 18px 40px rgba(30,40,100,.15)}
+:root[data-theme="light"] .float-badge small{color:#6b7594}
+:root[data-theme="light"] .photo-tools button{color:#4a5475;border-color:#dde2ee;background:#fff}
+:root[data-theme="light"] .l-foot{color:#6b7594}:root[data-theme="light"] .credit{color:#4a5475}
 /* ====================== DAY MATRIX ====================== */
 .mx-wrap{max-height:640px}
 .mx table{font-size:12px;border-collapse:separate;border-spacing:0}
@@ -353,7 +376,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .slide.on img{animation:kb 9s ease-out forwards}
 @keyframes kb{from{transform:scale(1.12)}to{transform:scale(1)}}
 .slide svg{width:100%;height:100%}
-.sl-cap{position:absolute;left:0;right:0;bottom:0;padding:50px 22px 18px;background:linear-gradient(transparent,rgba(0,0,0,.75));z-index:3;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.sl-cap{color:#fff;position:absolute;left:0;right:0;bottom:0;padding:50px 22px 18px;background:linear-gradient(transparent,rgba(0,0,0,.75));z-index:3;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .sl-cap b{font-family:Outfit;font-size:20px}
 .sl-cap small{display:block;color:rgba(255,255,255,.7);font-size:12px}
 .sl-ctrl{display:flex;gap:6px}
@@ -495,7 +518,8 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
   <div class="landing">
     <div class="l-top">
       <div class="l-logo" id="logoBig"></div>
-      <div class="l-clock"><b id="lClock">--:--</b><span id="lDate"></span></div>
+      <div style="display:flex;align-items:center;gap:14px"><div class="l-clock"><b id="lClock">--:--</b><span id="lDate"></span></div>
+        <button class="l-theme" id="lTheme" title="Switch light / dark" aria-label="Switch light or dark mode"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div>
     </div>
     <div class="l-body">
       <div>
@@ -552,7 +576,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 const CONFIG = {
   SHEET_ID: '1kRjXLW2wyq1i-mKuBjXvxqE1O-BAbd5xEmwNpDBc8Vw',
   PUB_CSV:  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR4-C3MlJonRlfAakwW9tL7tUb4h64LiKHYHv2BX0ldRa72tPJi31WEg7Q-oCLSOP3xb0tSsZqj8yQ7/pub?output=csv',
-  SHEETS: { main: 'Commitment vs Achievement', tyre: 'Tyre Commitment', battery: 'Battery Commitment' },
+  SHEETS: { main: 'Commitment vs Achievement', tyre: ['Tyre Commitment ', 'Tyre Commitment', 'TYRE COMMITMENT'], battery: ['Battery Commitment', 'Battery Commitment ', 'BATTERY COMMITMENT'] },  // tab names (all spellings tried)
   AUTO_REFRESH_MIN: 5,          // live refresh interval
   EXCLUDE_SUNDAYS: true,        // Sundays are not counted as working days in forecasts
   LOGO_URL: '',                 // optional: e.g. 'logo.png' — leave empty to use the built-in vector logo
@@ -726,7 +750,9 @@ async function loadData(){
   }
   if(!recs){ recs = snapshotRecords(); source = 'Offline snapshot'; }
   await Promise.all(['tyre','battery'].map(async v => {
-    try{ state.plan[v] = parsePlan(parseCSV(await fetchText(gviz(CONFIG.SHEETS[v])))); }catch(e){ state.plan[v] = state.plan[v] || null; }
+    const names = [].concat(CONFIG.SHEETS[v]); let got = null;
+    for(const n of names){ try{ got = parsePlan(parseCSV(await fetchText(gviz(n)))); if(got) break; }catch(e){} }
+    state.plan[v] = got || state.plan[v] || null;
   }));
   recs.sort((a,b)=> a.key<b.key?-1:a.key>b.key?1:(BMAP[a.code].order-BMAP[b.code].order));
   state.data = recs; state.source = source; state.loadedAt = new Date();
@@ -1140,7 +1166,6 @@ function renderVertical(v){
     </div>
     <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="6 5"/></svg>
   </div>
-  ${todayStrip()}
   <div class="grid g-kpi">
     ${kpi({label:'Commitment', value:cm, icon:'target', color:'--commit', foot:`${committed} branches committed`})}
     ${kpi({label:'Achievement', value:a, icon:'check', color:VV.col, foot:`${active} branches with sales`, delay:60})}
@@ -1408,7 +1433,7 @@ function askInfo(v, codes){
   const agg = list => { const T = {planToday:0, planPrev:0, planMonth:hasPlan?0:null, achPrev:0, achToday:0};
     list.forEach(o => { T.planToday += o.planToday; T.planPrev += o.planPrev; T.achPrev += o.achPrev; T.achToday += o.achToday; if(hasPlan) T.planMonth += o.planMonth; });
     T.carry = Math.max(0, T.planPrev - T.achPrev); T.ask = T.planToday + T.carry; T.left = Math.max(0, T.ask - T.achToday);
-    T.mtdAch = T.achPrev + T.achToday; T.monthBal = hasPlan ? Math.max(0, T.planMonth - T.mtdAch) : null; return T; };
+    T.mtdAch = T.achPrev; T.monthBal = hasPlan ? Math.max(0, T.planMonth - T.mtdAch) : null; return T; };
   let wd = 0; const end = new Date(y, m+1, 0); for(let d = new Date(y, m, now.getDate()); d<=end; d.setDate(d.getDate()+1)) if(isWD(d)) wd++;
   const T = agg(rows);
   T.perDay = T.monthBal!==null && wd ? T.monthBal / wd : null;
@@ -1418,7 +1443,7 @@ function askInfo(v, codes){
 function planBadge(){
   const ok = ['tyre','battery'].map(v => { const p = state.plan[v]; const n = p ? Object.keys(p).length : 0; return `${V[v].name}: ${n ? `✓ ${n} days` : '✕ not found'}`; });
   const good = state.plan.tyre && state.plan.battery;
-  return `<span class="pill ${good?'good':'warn'}" title="Commitment tabs: “${CONFIG.SHEETS.tyre}” and “${CONFIG.SHEETS.battery}”">Commitment sheet · ${ok.join(' · ')}</span>`;
+  return `<span class="pill ${good?'good':'warn'}" title="Commitment tabs: Tyre Commitment / Battery Commitment">Commitment sheet · ${ok.join(' · ')}</span>`;
 }
 function askBlock(I){
   const c = COL(), v = I.v, VV = V[v], col = v==='tyre' ? c.tyre : c.bat, T = I.T;
@@ -1427,9 +1452,8 @@ function askBlock(I){
     <div class="ask-big"><b style="color:${col}">${fmt(T.ask)}</b><span>units needed today</span></div>
     <div class="ask-eq"><span><small>Today commit</small><b>${fmt(T.planToday)}</b></span><i>+</i><span><small>Carry forward</small><b>${fmt(T.carry)}</b></span><i>=</i><span><small>Ask</small><b>${fmt(T.ask)}</b></span></div>
     <div class="ask-cf">Till yesterday: committed <b>${fmt(T.planPrev)}</b> · achieved <b>${fmt(T.achPrev)}</b> → balance <b>${fmt(T.carry)}</b></div>
-    <div class="tv-nums" style="margin-top:10px"><div><small>Achieved today</small><b style="color:${col}">${I.todayInSheet?fmt(T.achToday):'0'}</b></div><div><small>Still needed</small><b style="color:${T.left>0?c.bad:c.good}">${fmt(T.left)}</b></div><div><small>Done</small><b>${Math.round(done)}%</b></div></div>
-    <div class="bar" style="margin-top:8px"><i data-w="${done}%" style="background:${col}"></i></div>
-    <div class="tv-mtd"><span>Month commit <b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></span><span>MTD ach <b>${fmt(T.mtdAch)}</b></span><span>Balance <b>${T.monthBal===null?'—':fmt(T.monthBal)}</b></span></div>
+    <div class="bar" style="margin-top:10px" title="Month progress"><i data-w="${T.planMonth?Math.min(100,T.mtdAch/T.planMonth*100):0}%" style="background:${col}"></i></div>
+    <div class="tv-mtd"><span>Month commit <b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></span><span>Achieved till yesterday <b>${fmt(T.mtdAch)}</b></span><span>Balance <b>${T.monthBal===null?'—':fmt(T.monthBal)}</b></span></div>
     ${T.perDay!==null?`<div class="ask-cf" style="margin-top:6px">Need <b>${T.perDay.toFixed(1)}</b>/day over the ${I.wd} working day${I.wd===1?'':'s'} left (incl. today) to hit the month commitment</div>`:''}
   </div>`;
 }
@@ -1438,7 +1462,7 @@ function todayStrip(){
   const It = askInfo('tyre', codes), Ib = askInfo('battery', codes);
   const tk = It.tk;
   const branchRows = scopeBranches().map(b => ({b, t:It.rows.find(o=>o.code===b.code), y:Ib.rows.find(o=>o.code===b.code)}));
-  const cellsFor = o => `<td class="num">${fmt(o.planToday)}</td><td class="num">${fmt(o.carry)}</td><td class="num"><b>${fmt(o.ask)}</b></td><td class="num">${fmt(o.achToday)}</td><td class="num" style="color:${o.left>0?'var(--bad)':'var(--good)'};font-weight:700">${fmt(o.left)}</td>`;
+  const cellsFor = o => `<td class="num">${fmt(o.planToday)}</td><td class="num">${fmt(o.carry)}</td><td class="num" style="color:${o.ask>0?'var(--red)':'var(--muted)'}"><b>${fmt(o.ask)}</b></td>`;
   let lastZ = null, brHtml = '';
   branchRows.forEach(({b,t,y}) => { if(b.zone!==lastZ){ lastZ = b.zone; const zt = It.zones.find(z=>z.zone===b.zone), zb = Ib.zones.find(z=>z.zone===b.zone);
       brHtml += `<tr class="zone-row"><td>Zone ${b.zone} · Cluster ${b.cluster}</td>${cellsFor(zt)}${cellsFor(zb)}</tr>`; }
@@ -1450,14 +1474,14 @@ function todayStrip(){
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${planBadge()}<span class="td-date">${ddmmyyyy(tk)}</span></div></div>
     <div class="today">${askBlock(It)}${askBlock(Ib)}
       <div class="td-v td-zone" style="--vc:var(--commit)"><div class="tv-h">🗺️ Today's Ask by Zone</div>
-        <table><thead><tr><th>Zone</th><th class="num">Tyre ask</th><th class="num">Done</th><th class="num">Bat ask</th><th class="num">Done</th></tr></thead>
-        <tbody>${It.zones.map((z,i)=>{ const zb = Ib.zones[i]; return `<tr><td><b style="color:${ZCOL[z.zone]}">Zone ${z.zone}</b> <span class="tag">C${CLUSTER_OF_ZONE[z.zone]}</span></td><td class="num"><b>${fmt(z.ask)}</b></td><td class="num">${fmt(z.achToday)}</td><td class="num"><b>${fmt(zb.ask)}</b></td><td class="num">${fmt(zb.achToday)}</td></tr>`; }).join('')}</tbody>
-        <tfoot><tr><td>Total</td><td class="num">${fmt(It.T.ask)}</td><td class="num">${fmt(It.T.achToday)}</td><td class="num">${fmt(Ib.T.ask)}</td><td class="num">${fmt(Ib.T.achToday)}</td></tr></tfoot></table>
+        <table><thead><tr><th>Zone</th><th class="num">Tyre commit</th><th class="num">Tyre ask</th><th class="num">Bat commit</th><th class="num">Bat ask</th></tr></thead>
+        <tbody>${It.zones.map((z,i)=>{ const zb = Ib.zones[i]; return `<tr><td><b style="color:${ZCOL[z.zone]}">Zone ${z.zone}</b> <span class="tag">C${CLUSTER_OF_ZONE[z.zone]}</span></td><td class="num">${fmt(z.planToday)}</td><td class="num"><b>${fmt(z.ask)}</b></td><td class="num">${fmt(zb.planToday)}</td><td class="num"><b>${fmt(zb.ask)}</b></td></tr>`; }).join('')}</tbody>
+        <tfoot><tr><td>Total</td><td class="num">${fmt(It.T.planToday)}</td><td class="num">${fmt(It.T.ask)}</td><td class="num">${fmt(Ib.T.planToday)}</td><td class="num">${fmt(Ib.T.ask)}</td></tr></tfoot></table>
         <div class="td-note">Cluster 1: Tyre ${fmt(It.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===1).reduce((s,z)=>s+z.ask,0))} · Battery ${fmt(Ib.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===1).reduce((s,z)=>s+z.ask,0))}<br>Cluster 2: Tyre ${fmt(It.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===2).reduce((s,z)=>s+z.ask,0))} · Battery ${fmt(Ib.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===2).reduce((s,z)=>s+z.ask,0))}<br><small>Zone/cluster asks are calculated on the group's own balance.</small></div></div>
     </div>${warn}
     <details class="ask-det"><summary>View branch-wise Today's Ask (${branchRows.length} branches)</summary>
-      <div class="tbl-wrap mt"><table><thead><tr class="grp"><th></th><th colspan="5" style="color:var(--tyre)">⚙️ TYRE</th><th colspan="5" style="color:var(--bat)">🔋 BATTERY</th></tr>
-      <tr><th>Branch</th>${'<th class="num">Today commit</th><th class="num">Carry fwd</th><th class="num">Ask</th><th class="num">Done</th><th class="num">Still needed</th>'.repeat(2)}</tr></thead>
+      <div class="tbl-wrap mt"><table><thead><tr class="grp"><th></th><th colspan="3" style="color:var(--tyre)">⚙️ TYRE</th><th colspan="3" style="color:var(--bat)">🔋 BATTERY</th></tr>
+      <tr><th>Branch</th>${'<th class="num">Today commit</th><th class="num">Carry fwd</th><th class="num">Today\'s ask</th>'.repeat(2)}</tr></thead>
       <tbody>${brHtml}</tbody><tfoot><tr><td>Total</td>${cellsFor(It.T)}${cellsFor(Ib.T)}</tr></tfoot></table></div>
       <div class="td-note">Branch carry-forward uses each branch's own balance, so branch values may add up to more than the group total (over-achieving branches don't offset others).</div></details>
   </div>`;
@@ -1468,9 +1492,9 @@ function landingToday(){
   const card = I => { const v = I.v, T = I.T, hi = v==='tyre' ? '#ff9a63' : '#4fe3ad';
     return `<div class="lt-card"><div class="lt-t">${v==='tyre'?tyreIcon(24):batIcon(24)} ${V[v].name} · Today's Ask</div>
       <div class="lt-ask"><b style="color:${hi}">${fmt(T.ask)}</b><span>= today commit <b>${fmt(T.planToday)}</b> + carry fwd <b>${fmt(T.carry)}</b></span></div>
-      <div class="lt-row"><div><small>Done today</small><b>${fmt(T.achToday)}</b></div><div><small>Still needed</small><b>${fmt(T.left)}</b></div><div><small>Month commit</small><b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></div></div>
-      <div class="lt-mtd">MTD achieved <b>${fmt(T.mtdAch)}</b>${T.monthBal!==null?` · month balance <b>${fmt(T.monthBal)}</b> · <b>${T.perDay.toFixed(1)}</b>/day needed`:''}</div></div>`; };
-  return `<div class="lt-h"><span><b>🎯 Today's Ask · ${longD(It.tk)}</b></span><span>Commitment + carry-forward balance</span></div>
+      <div class="lt-row"><div><small>Month commit</small><b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></div><div><small>Achieved</small><b>${fmt(T.mtdAch)}</b></div><div><small>Balance</small><b>${T.monthBal===null?'—':fmt(T.monthBal)}</b></div></div>
+      <div class="lt-mtd">Achieved is till yesterday${T.monthBal!==null?` · month balance <b>${fmt(T.monthBal)}</b> · <b>${T.perDay.toFixed(1)}</b>/day needed`:''}</div></div>`; };
+  return `<div class="lt-h"><span><b>🎯 Today's Ask · ${longD(It.tk)}</b></span><span>Today's commitment + carry-forward balance</span></div>
     <div class="lt-grid">${card(It)}${card(Ib)}</div>`;
 }
 
@@ -1640,8 +1664,10 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------- Theme / tools ---------- */
-function setTheme(t){ if(t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; store('amm_theme', t||''); }
-$('#btnTheme').onclick = () => { const cur = document.documentElement.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); setTheme(cur==='dark'?'light':'dark'); render(); };
+function setTheme(t){ document.documentElement.dataset.theme = t || 'light'; }
+function toggleTheme(){ const cur = document.documentElement.dataset.theme || 'light'; setTheme(cur==='dark'?'light':'dark'); render(); }
+$('#btnTheme').onclick = toggleTheme;
+$('#lTheme').onclick = toggleTheme;
 $('#btnFull').onclick = () => { if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); };
 $('#btnPrint').onclick = () => window.print();
 $('#btnRefresh').onclick = async () => { const b = $('#btnRefresh svg'); b.classList.add('spin'); await refresh(); b.classList.remove('spin'); toast(state.source.startsWith('Live')?'Data refreshed':'Could not reach the sheet — showing snapshot'); };
@@ -1659,7 +1685,7 @@ async function refresh(){
    BOOT
    ===================================================================== */
 (async function boot(){
-  const t = store('amm_theme'); if(t) setTheme(t);
+  setTheme('light');   // always opens in light mode; the moon button switches to dark for this visit
   $('#logoSmall').innerHTML = logoSVG(32); $('#logoBig').innerHTML = logoSVG(46);
   $('#fbTyre').innerHTML = tyreIcon(42); $('#fbBat').innerHTML = batIcon(42);
   $('#road').innerHTML = `<div class="rcar">${carSVG()}</div><div class="rcar c2">${carSVG('#ED1C24','#2E3192')}</div>`;
@@ -1674,7 +1700,6 @@ async function refresh(){
   setTimeout(()=>$('#loader').classList.add('done'), 350);
   setInterval(()=>refresh().catch(()=>{}), CONFIG.AUTO_REFRESH_MIN*60000);
   let rT; window.addEventListener('resize', ()=>{ clearTimeout(rT); rT = setTimeout(()=>{ if(state.page!=='landing') render(); }, 300); });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ()=>{ if(!document.documentElement.dataset.theme) render(); });
 })();
 </script>
 </body>
