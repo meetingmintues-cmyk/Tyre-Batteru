@@ -243,6 +243,66 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .legend span{display:flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
 
+/* ====================== TODAY STRIP ====================== */
+.today{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:14px}
+.td-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.td-head h3{font-size:16px}
+.td-date{font-family:Outfit;font-weight:800;font-size:13px;padding:6px 12px;border-radius:10px;background:color-mix(in srgb,var(--red) 12%,transparent);color:var(--red)}
+.td-v{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--panel2);position:relative;overflow:hidden}
+.td-v::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--vc)}
+.td-v .tv-h{display:flex;align-items:center;gap:10px;font-family:Outfit;font-weight:800;font-size:16px;margin-bottom:10px}
+.td-v .tv-h svg{width:30px;height:30px}
+.tv-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tv-nums small{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.tv-nums b{font-family:Outfit;font-size:26px;font-weight:800;line-height:1.15}
+.tv-mtd{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.tv-mtd b{color:var(--text)}
+.td-zone table{font-size:12px}
+.td-zone td,.td-zone th{padding:6px 8px}
+.td-note{font-size:11.5px;color:var(--muted);margin-top:10px}
+/* ====================== DAY MATRIX ====================== */
+.mx-wrap{max-height:640px}
+.mx table{font-size:12px;border-collapse:separate;border-spacing:0}
+.mx th,.mx td{padding:6px 9px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--line)}
+.mx thead th{position:sticky;cursor:default;text-transform:none;letter-spacing:.2px;font-size:11px;padding:0 8px;box-sizing:border-box}
+.mx thead tr:nth-child(1) th{top:0;height:32px;font-family:Outfit;font-size:12.5px;font-weight:800;color:#fff}
+.mx thead tr:nth-child(2) th{top:32px;height:26px;font-weight:800}
+.mx thead tr:nth-child(3) th{top:58px;height:26px;color:var(--muted)}
+.mx th.dc,.mx td.dc{position:sticky;left:0;z-index:3;text-align:left;background:var(--panel);font-weight:700;border-right:2px solid var(--line)}
+.mx thead tr:nth-child(1) th.dc{z-index:4;color:var(--text);background:var(--panel2);color:var(--text);font-family:Outfit;font-size:13px}
+.mx td.dc small{color:var(--faint);font-weight:500;margin-left:6px}
+.mx .gs{border-left:3px solid var(--line)}
+.mx .g0{background:#2e3192}.mx .g1{background:#5b4bd6}
+.mx .vh-bat{background:color-mix(in srgb,var(--bat) 18%,var(--panel2));color:var(--bat)}
+.mx .vh-tyre{background:color-mix(in srgb,var(--tyre) 18%,var(--panel2));color:var(--tyre)}
+.mx td.pc{font-weight:800;min-width:54px}
+.mx td.p-good{background:color-mix(in srgb,var(--good) 26%,transparent);color:var(--good)}
+.mx td.p-warn{background:color-mix(in srgb,var(--warn) 26%,transparent);color:color-mix(in srgb,var(--warn) 75%,var(--text))}
+.mx td.p-bad{background:color-mix(in srgb,var(--bad) 22%,transparent);color:var(--bad)}
+.mx td.p-bonus{background:color-mix(in srgb,var(--bonus) 20%,transparent);color:var(--bonus)}
+.mx td.p-idle{color:var(--faint)}
+.mx tbody tr:hover td{background-image:linear-gradient(color-mix(in srgb,var(--commit) 7%,transparent),color-mix(in srgb,var(--commit) 7%,transparent))}
+.mx tr.sun td.dc{color:var(--faint)}
+.mx tr.trow td.dc{color:var(--red)}
+.mx tr.trow td.dc::after{content:" ● today";font-size:10px}
+.mx tfoot td{position:sticky;bottom:0;background:var(--text);color:var(--bg);font-weight:800;font-family:Outfit;font-size:12.5px;border:none}
+.mx tfoot td.dc{background:var(--text);color:var(--bg)}
+/* landing today */
+.l-today{margin:24px 0 0;max-width:640px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:14px 16px;backdrop-filter:blur(8px)}
+.l-today .lt-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.65);margin-bottom:10px;gap:10px;flex-wrap:wrap}
+.l-today .lt-h b{font-family:Outfit;color:#fff;font-size:15px}
+.lt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lt-card{border-radius:14px;padding:12px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08)}
+.lt-card .lt-t{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;margin-bottom:8px}
+.lt-card .lt-t svg{width:24px;height:24px}
+.lt-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lt-row small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.55);font-weight:600}
+.lt-row b{font-family:Outfit;font-size:24px;font-weight:800}
+.lt-mtd{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:8px}
+.lt-mtd b{color:#fff}
+@media (max-width:1200px){.today{grid-template-columns:1fr 1fr}.today .td-zone{grid-column:span 2}}
+@media (max-width:860px){.today{grid-template-columns:1fr}.today .td-zone{grid-column:auto}.lt-grid{grid-template-columns:1fr}}
+
 /* ====================== LANDING ====================== */
 #page-landing.show{animation:none}
 .landing{position:relative;min-height:100vh;overflow:hidden;background:radial-gradient(1200px 600px at 10% -10%,rgba(46,49,146,.55),transparent 60%),radial-gradient(900px 600px at 110% 20%,rgba(237,28,36,.35),transparent 60%),#060914;color:#fff}
@@ -429,6 +489,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
         <span class="l-kicker"><i></i> <span id="lKick">Live performance intelligence</span></span>
         <h1 class="l-title">Driving <span class="tw">Tyre</span> &amp;<br><span class="bw">Battery</span> Excellence</h1>
         <p class="l-desc">Commitment vs achievement across every AM Motors workshop — 29 branches, 4 zones and 2 clusters — with daily tracking, rankings and month-end forecasts.</p>
+        <div class="l-today" id="lToday"></div>
         <div class="l-stats" id="lStats"></div>
         <div class="l-cta">
           <button class="l-go main" data-go="overview"><span class="gi" style="background:rgba(255,255,255,.18)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg></span><span>Enter Dashboard<small>Executive overview</small></span></button>
@@ -904,6 +965,7 @@ function renderOverview(){
     <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="6 5"/><circle cx="50" cy="50" r="22" fill="none" stroke="#fff" stroke-width="5"/></svg>
   </div>
 
+  ${todayStrip()}
   <div class="grid g-kpi">
     ${kpi({label:'Total Commitment', value:t.tc+t.bc, icon:'target', color:'--commit', foot:`Tyre ${fmt(t.tc)} · Battery ${fmt(t.bc)}`, delay:0})}
     ${kpi({label:'Total Achievement', value:t.ta+t.ba, icon:'check', color:'--good', foot:`Tyre ${fmt(t.ta)} · Battery ${fmt(t.ba)}`, delay:60})}
@@ -926,6 +988,8 @@ function renderOverview(){
           <div><small>Projected</small><b>${ff&&ff.projPct!==null?Math.round(ff.projPct)+'%':'—'}</b></div></div>
         <div class="vc-spark"><canvas id="spark-${v}"></canvas></div></div>`; }).join('')}
   </div>
+
+  <div class="card mt reveal mx">${matrixShell('ov','📋 Day-wise Commitment vs Achievement','Battery & Tyre · Total AM Group, clusters and zones — switch to branch-wise for every branch')}</div>
 
   <div class="grid g3 mt">
     <div class="card span2 reveal"><div class="card-head"><div><h3>Daily Performance Trend</h3><div class="sub">Achievement bars vs commitment lines, both verticals</div></div>
@@ -993,6 +1057,7 @@ function renderOverview(){
   $('#lbBot').innerHTML = worst.length ? worst.map((b,i)=>lbRow(b,'!', `${b.G>=0?'+':''}${fmt(b.G)}`, `${fmt(b.A)} of ${fmt(b.C)} committed`, true)).join('') : '<div class="empty">Every committed branch is on target 🎉</div>';
   $('#ovIns').innerHTML = insights(recs, br, zones, cls, days, fT, fB).map(x=>`<div class="ins-item"><span class="dot" style="background:color-mix(in srgb,${x.c} 15%,transparent);color:${x.c}">${x.i}</span><div>${x.t}</div></div>`).join('');
   buildTable('ov', br, 'both');
+  buildMatrix('ov', ['battery','tyre']);
   bindBranchLinks(el); animateIn(el);
 }
 function logoBadge(){ return `<div style="width:74px;height:74px;border-radius:18px;background:#fff;display:grid;place-items:center;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.25)">${logoSVG(30)}</div>`; }
@@ -1042,6 +1107,7 @@ function renderVertical(v){
     </div>
     <svg class="deco" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="6 5"/></svg>
   </div>
+  ${todayStrip()}
   <div class="grid g-kpi">
     ${kpi({label:'Commitment', value:cm, icon:'target', color:'--commit', foot:`${committed} branches committed`})}
     ${kpi({label:'Achievement', value:a, icon:'check', color:VV.col, foot:`${active} branches with sales`, delay:60})}
@@ -1057,6 +1123,8 @@ function renderVertical(v){
     <div class="card reveal"><div class="card-head"><div><h3>Cluster Share</h3><div class="sub">Achieved units by cluster</div></div></div><div class="chart-box short"><canvas id="${v}Cluster"></canvas></div>
       <div class="lb mt">${cls.map(x=>`<div class="lb-row" style="cursor:default"><span class="lb-rank">C${x.cluster}</span><div class="lb-name">Cluster ${x.cluster}<small>${x.zones.map(z=>'Zone '+z).join(' + ')}</small></div><div class="lb-val">${fmtPct(x[VV.a],x[VV.c])}<small>${fmt(x[VV.a])} / ${fmt(x[VV.c])}</small></div></div>`).join('')}</div></div>
   </div>
+
+  <div class="card mt reveal mx">${matrixShell(v,'📋 Day-wise '+VV.name+' Commitment vs Achievement','Total AM Group, clusters and zones — switch to branch-wise for every branch')}</div>
 
   <div class="grid g3 mt">
     <div class="card span2 reveal"><div class="card-head"><div><h3>🔮 Month-End Forecast · ${fc?fc.month:''}</h3><div class="sub">Cumulative actual, projection with confidence band, and commitment path</div></div></div><div class="chart-box tall"><canvas id="${v}Fc"></canvas></div></div>
@@ -1125,6 +1193,7 @@ function renderVertical(v){
   drawRank('a');
   $('#'+v+'RankSeg').onclick = e => { const b = e.target.closest('button'); if(!b) return; $$('#'+v+'RankSeg button').forEach(x=>x.classList.toggle('on',x===b)); drawRank(b.dataset.m); };
   buildTable(v, br, v);
+  buildMatrix(v, [v]);
   bindBranchLinks(el); animateIn(el);
 }
 function fcVerdict(fc, name){
@@ -1287,6 +1356,123 @@ function shrink(file){ return new Promise(res => { const r = new FileReader(); r
   const s = Math.min(1, 1100/Math.max(im.width,im.height)); const cv = document.createElement('canvas'); cv.width = im.width*s; cv.height = im.height*s;
   cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); res(cv.toDataURL('image/jpeg',.78)); }; im.src = r.result; }; r.readAsDataURL(file); }); }
 
+/* =====================================================================
+   TODAY PANEL
+   ===================================================================== */
+const ddmmyyyy = k => { const d = fromKey(k); return `${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()}`; };
+function todayInfo(codes){
+  const tk = dkey(new Date());
+  const inScope = r => codes.has(r.code);
+  const planSum = p => p ? Object.entries(p).reduce((s,[c,v])=>s+(codes.has(c)?v:0),0) : 0;
+  let key = null, fromPlan = false, t, zoneRows;
+  if(state.dates.includes(tk)) key = tk;
+  else if((state.plan.tyre && state.plan.tyre[tk]) || (state.plan.battery && state.plan.battery[tk])){ key = tk; fromPlan = true; }
+  else key = state.dates.at(-1);
+  if(!key) return null;
+  const recs = state.data.filter(r=>r.key===key && inScope(r));
+  if(fromPlan){
+    t = {tc:planSum(state.plan.tyre&&state.plan.tyre[tk]), bc:planSum(state.plan.battery&&state.plan.battery[tk]), ta:0, ba:0};
+    zoneRows = ZONES.map(z=>{ const zc = new Set([...codes].filter(c=>BMAP[c]&&BMAP[c].zone===z)); const ps = p => p ? Object.entries(p).reduce((s,[c,v])=>s+(zc.has(c)?v:0),0) : 0;
+      return {zone:z, tc:ps(state.plan.tyre&&state.plan.tyre[tk]), bc:ps(state.plan.battery&&state.plan.battery[tk]), ta:0, ba:0, n:zc.size}; });
+  } else {
+    t = sum(recs);
+    zoneRows = ZONES.map(z=>({zone:z, ...sum(recs.filter(r=>BMAP[r.code].zone===z)), n:[...codes].filter(c=>BMAP[c]&&BMAP[c].zone===z).length}));
+  }
+  const d = fromKey(key);
+  const mtd = sum(state.data.filter(r=>inScope(r) && r.d.getFullYear()===d.getFullYear() && r.d.getMonth()===d.getMonth() && r.key<=key));
+  if(fromPlan){ mtd.tc += t.tc; mtd.bc += t.bc; }
+  const committedBranches = fromPlan ? new Set([...Object.entries((state.plan.tyre||{})[tk]||{}),...Object.entries((state.plan.battery||{})[tk]||{})].filter(([c,v])=>v>0&&codes.has(c)).map(([c])=>c)).size
+                                     : recs.filter(r=>r.tc>0||r.bc>0).length;
+  return {key, isToday:key===tk, fromPlan, t, mtd, zoneRows:zoneRows.filter(z=>z.n>0), committedBranches};
+}
+function todayStrip(){
+  const codes = new Set(scopeBranches().map(b=>b.code)); const T = todayInfo(codes); if(!T) return '';
+  const c = COL();
+  const block = v => { const VV = V[v], a = T.t[VV.a], cm = T.t[VV.c], col = v==='tyre'?c.tyre:c.bat;
+    return `<div class="td-v" style="--vc:${col}"><div class="tv-h">${v==='tyre'?tyreIcon(30):batIcon(30)} ${VV.name}</div>
+      <div class="tv-nums"><div><small>${T.isToday?'Today':'Day'} commit</small><b>${fmt(cm)}</b></div>
+      <div><small>Achieved</small><b style="color:${col}">${T.fromPlan?'—':fmt(a)}</b></div>
+      <div><small>Ach %</small><b>${T.fromPlan?'—':fmtPct(a,cm)}</b></div></div>
+      <div class="bar" style="margin-top:10px"><i data-w="${Math.min(100,pct(a,cm)||0)}%" style="background:${col}"></i></div>
+      <div class="tv-mtd"><span>MTD commit <b>${fmt(T.mtd[VV.c])}</b></span><span>MTD achieved <b>${fmt(T.mtd[VV.a])}</b></span><span><b>${fmtPct(T.mtd[VV.a],T.mtd[VV.c])}</b></span></div></div>`; };
+  return `<div class="card reveal" style="margin-bottom:16px">
+    <div class="td-head"><div><h3>📅 ${T.isToday?"Today's Commitment & Achievement":'Latest Day Commitment & Achievement'}</h3>
+      <div class="sub">${scopeText()} · ${T.committedBranches} branch${T.committedBranches===1?'':'es'} with commitment${T.isToday?'':` · today's (${shortD(dkey(new Date()))}) entries are not in the sheet yet`}${T.fromPlan?' · from commitment sheet (achievement pending)':''}</div></div>
+      <span class="td-date">${longD(T.key)}</span></div>
+    <div class="today">${block('tyre')}${block('battery')}
+      <div class="td-v td-zone" style="--vc:var(--commit)"><div class="tv-h">🗺️ By Zone</div>
+        <table><thead><tr><th>Zone</th><th class="num">Tyre C</th><th class="num">Tyre A</th><th class="num">Bat C</th><th class="num">Bat A</th></tr></thead>
+        <tbody>${T.zoneRows.map(z=>`<tr><td><b style="color:${ZCOL[z.zone]}">Zone ${z.zone}</b> <span class="tag">C${CLUSTER_OF_ZONE[z.zone]}</span></td><td class="num">${fmt(z.tc)}</td><td class="num">${T.fromPlan?'—':fmt(z.ta)}</td><td class="num">${fmt(z.bc)}</td><td class="num">${T.fromPlan?'—':fmt(z.ba)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>Total</td><td class="num">${fmt(T.t.tc)}</td><td class="num">${T.fromPlan?'—':fmt(T.t.ta)}</td><td class="num">${fmt(T.t.bc)}</td><td class="num">${T.fromPlan?'—':fmt(T.t.ba)}</td></tr></tfoot></table></div>
+    </div></div>`;
+}
+function landingToday(){
+  const codes = new Set(Object.keys(BMAP)); const T = todayInfo(codes); if(!T) return '';
+  const card = v => { const VV = V[v], a = T.t[VV.a], cm = T.t[VV.c];
+    return `<div class="lt-card"><div class="lt-t">${v==='tyre'?tyreIcon(24):batIcon(24)} ${VV.name}</div>
+      <div class="lt-row"><div><small>Commit</small><b>${fmt(cm)}</b></div><div><small>Achieved</small><b style="color:${v==='tyre'?'#ff9a63':'#4fe3ad'}">${T.fromPlan?'—':fmt(a)}</b></div><div><small>Ach %</small><b>${T.fromPlan?'—':fmtPct(a,cm)}</b></div></div>
+      <div class="lt-mtd">Month total commit <b>${fmt(T.mtd[VV.c])}</b> · achieved <b>${fmt(T.mtd[VV.a])}</b> (${fmtPct(T.mtd[VV.a],T.mtd[VV.c])})</div></div>`; };
+  return `<div class="lt-h"><span><b>📅 ${T.isToday?'Today':'Latest day'} · ${longD(T.key)}</b></span><span>${T.isToday?`${T.committedBranches} branches committed`:"Today's entries not in the sheet yet"}</span></div>
+    <div class="lt-grid">${card('tyre')}${card('battery')}</div>`;
+}
+
+/* =====================================================================
+   DAY-WISE MATRIX (Excel-style)
+   ===================================================================== */
+function matrixShell(id, title, sub){
+  return `<div class="card-head"><div><h3>${title}</h3><div class="sub">${sub}</div></div>
+    <div class="tbl-tools"><div class="seg" id="${id}MxView"><button class="on" data-m="grp">Group · Cluster · Zone</button><button data-m="br">Branch-wise</button></div>
+    <button class="btn" id="${id}MxExp">${ICONS.dl} Export CSV</button></div></div>
+    <div class="tbl-wrap mx-wrap" id="${id}Mx"></div>`;
+}
+function buildMatrix(id, verts){
+  let view = 'grp';
+  const tk = dkey(new Date());
+  const getGroups = () => {
+    const f = state.filters;
+    if(view==='br') return scopeBranches().map(b=>({name:b.label, test:r=>r.code===b.code, bg:ZCOL[b.zone]}));
+    if(f.branch) return [{name:BMAP[f.branch].label, test:()=>true, bg:ZCOL[BMAP[f.branch].zone]}];
+    const g = [{name:'TOTAL · AM GROUP', test:()=>true, cls:'g0'}];
+    if(!f.zone) [1,2].filter(c=>!f.cluster||c==f.cluster).forEach(c=>g.push({name:'CLUSTER - '+c, test:r=>BMAP[r.code].cluster===c, cls:'g1'}));
+    ZONES.filter(z=>(!f.cluster||CLUSTER_OF_ZONE[z]==f.cluster)&&(!f.zone||z==f.zone)).forEach(z=>g.push({name:'ZONE - '+z, test:r=>BMAP[r.code].zone===z, bg:ZCOL[z]}));
+    return g;
+  };
+  const compute = () => {
+    const recs = filtered(); const days = [...new Set(recs.map(r=>r.key))].sort(); const groups = getGroups();
+    const cell = {}; const blank = () => ({bc:0,ba:0,tc:0,ta:0});
+    groups.forEach((g,gi)=>{ days.forEach(k=>cell[gi+'|'+k]=blank()); cell[gi+'|T']=blank(); });
+    recs.forEach(r => groups.forEach((g,gi)=>{ if(g.test(r)) [cell[gi+'|'+r.key], cell[gi+'|T']].forEach(o=>{ o.bc+=r.bc; o.ba+=r.ba; o.tc+=r.tc; o.ta+=r.ta; }); }));
+    return {days, groups, cell};
+  };
+  const pcls = (a,c) => { if(c<=0) return a>0 ? 'p-bonus' : 'p-idle'; const p = a/c*100; return p>=100?'p-good':p>=50?'p-warn':'p-bad'; };
+  const pTxt = (a,c) => c>0 ? Math.round(a/c*100)+'%' : (a>0 ? 'Bonus' : '—');
+  const draw = () => {
+    const {days, groups, cell} = compute(); const box = $('#'+id+'Mx'); if(!box) return;
+    if(!days.length){ box.innerHTML = '<div class="empty">No data for this selection</div>'; return; }
+    const vn = {battery:['BATTERY','vh-bat'], tyre:['TYRE','vh-tyre']};
+    let h = '<table><thead><tr><th class="dc" rowspan="3">DAY</th>' + groups.map(g=>`<th class="gs ${g.cls||''}" colspan="${verts.length*3}" ${g.bg?`style="background:${g.bg}"`:''}>${esc(g.name)}</th>`).join('') + '</tr><tr>';
+    h += groups.map(()=>verts.map((v,i)=>`<th class="${i===0?'gs ':''}${vn[v][1]}" colspan="3">${vn[v][0]}</th>`).join('')).join('') + '</tr><tr>';
+    h += groups.map(()=>verts.map((v,i)=>`<th class="${i===0?'gs':''}">CMT</th><th>ACHV</th><th>%</th>`).join('')).join('') + '</tr></thead><tbody>';
+    const cells = o => groups.map((g,gi)=>verts.map((v,i)=>{ const x = o(gi), VV = V[v], a = x[VV.a], c = x[VV.c];
+      return `<td class="${i===0?'gs':''}">${fmt(c)}</td><td>${fmt(a)}</td><td class="pc ${pcls(a,c)}">${pTxt(a,c)}</td>`; }).join('')).join('');
+    days.forEach(k => { const d = fromKey(k);
+      h += `<tr class="${d.getDay()===0?'sun':''} ${k===tk?'trow':''}"><td class="dc">${ddmmyyyy(k)}<small>${DOW[d.getDay()]}</small></td>${cells(gi=>cell[gi+'|'+k])}</tr>`; });
+    h += `</tbody><tfoot><tr><td class="dc">TOTAL</td>${cells(gi=>cell[gi+'|T']).replace(/class="pc [^"]*"/g,'class="pc"')}</tr></tfoot></table>`;
+    box.innerHTML = h;
+  };
+  $('#'+id+'MxView').onclick = e => { const b = e.target.closest('button'); if(!b) return; view = b.dataset.m; $$('#'+id+'MxView button').forEach(x=>x.classList.toggle('on',x===b)); draw(); };
+  $('#'+id+'MxExp').onclick = () => {
+    const {days, groups, cell} = compute();
+    const r1 = ['Day'], r2 = [''], r3 = [''];
+    groups.forEach(g=>verts.forEach(v=>{ r1.push(g.name,'',''); r2.push(V[v].name,'',''); r3.push('CMT','ACHV','%'); }));
+    const row = (label, o) => [label].concat(...groups.map((g,gi)=>verts.map(v=>{ const x = o(gi), a = x[V[v].a], c = x[V[v].c]; return [c, a, c>0?(a/c*100).toFixed(1)+'%':(a>0?'Bonus':'')]; }).flat()));
+    const lines = [r1,r2,r3].concat(days.map(k=>row(ddmmyyyy(k), gi=>cell[gi+'|'+k])), [row('TOTAL', gi=>cell[gi+'|T'])]);
+    const blob = new Blob([lines.map(l=>l.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n')],{type:'text/csv'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `AM_Motors_daywise_${id}_${view}_${state.filters.from}_to_${state.filters.to}.csv`; a.click(); URL.revokeObjectURL(a.href); toast('CSV exported');
+  };
+  draw();
+}
+
 function renderLanding(){
   const f = state.filters; const latest = state.dates.at(-1);
   const y = latest ? fromKey(latest) : new Date();
@@ -1299,6 +1485,7 @@ function renderLanding(){
     ['Latest data', latest? shortD(latest):'—', latest? DOW[fromKey(latest).getDay()]:'']
   ].map(([l,v,s])=>`<div class="l-stat"><small>${l}</small><b>${v}</b><small style="text-transform:none;letter-spacing:0">${s}</small></div>`).join('');
   $('#fbTyreV').textContent = fmtPct(t.ta,t.tc); $('#fbBatV').textContent = fmtPct(t.ba,t.bc);
+  $('#lToday').innerHTML = landingToday();
   $('#lSource').textContent = `${state.source} · updated ${state.loadedAt.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
   $('#lKick').textContent = state.source.startsWith('Live') ? 'Live performance intelligence' : 'Showing offline snapshot';
 }
