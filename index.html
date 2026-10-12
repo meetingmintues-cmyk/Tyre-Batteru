@@ -260,6 +260,19 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .td-zone table{font-size:12px}
 .td-zone td,.td-zone th{padding:6px 8px}
 .td-note{font-size:11.5px;color:var(--muted);margin-top:10px}
+.ask-tag{margin-left:auto;font-family:Inter;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:4px 8px;border-radius:7px}
+.ask-big{display:flex;align-items:baseline;gap:10px;margin:2px 0 8px}
+.ask-big b{font-family:Outfit;font-size:52px;font-weight:900;line-height:1;letter-spacing:-1px}
+.ask-big span{font-size:12.5px;color:var(--muted);font-weight:600}
+.ask-eq{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.ask-eq span{flex:1;text-align:center}.ask-eq small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+.ask-eq b{font-family:Outfit;font-size:20px;font-weight:800}.ask-eq i{font-style:normal;font-weight:800;color:var(--faint);font-size:18px}
+.ask-cf{font-size:12px;color:var(--muted);margin-top:8px}.ask-cf b{color:var(--text)}
+.ask-det{margin-top:14px}.ask-det summary{cursor:pointer;font-weight:700;font-size:13px;color:var(--commit);padding:6px 0}
+.lt-ask{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.lt-ask b{font-family:Outfit;font-size:44px;font-weight:900;line-height:1}
+.lt-ask span{flex-basis:100%;font-size:11.5px;color:rgba(255,255,255,.65)}.lt-ask span b{font-size:12px;color:#fff;font-family:Inter}
+.credit{font-weight:700;color:rgba(255,255,255,.75)}.credit b{background:linear-gradient(90deg,#ff7a3d,#ed1c24,#6f8cff);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:Outfit;font-weight:900;letter-spacing:.3px}
 /* ====================== DAY MATRIX ====================== */
 .mx-wrap{max-height:640px}
 .mx table{font-size:12px;border-collapse:separate;border-spacing:0}
@@ -516,7 +529,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
         </div>
       </div>
     </div>
-    <div class="l-foot"><span id="lSource">—</span><span>Press <b>1</b> <b>2</b> <b>3</b> to jump between pages</span></div>
+    <div class="l-foot"><span id="lSource">—</span><span class="credit">Developed by <b>Team Explore</b></span><span>Press <b>1</b> <b>2</b> <b>3</b> to jump between pages</span></div>
     <div class="road" id="road"></div>
   </div>
 </section>
@@ -525,7 +538,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
   <section class="page" id="page-overview"></section>
   <section class="page" id="page-tyre"></section>
   <section class="page" id="page-battery"></section>
-  <div class="foot">AM Motors · Tyre & Battery Performance Dashboard · Data: Google Sheets “Tyre and Battery” · <span id="footTime"></span></div>
+  <div class="foot">AM Motors · Tyre & Battery Performance Dashboard · Data: Google Sheets “Tyre and Battery” · <span id="footTime"></span> · Developed by <b>Team Explore</b></div>
 </main>
 
 <!-- ============ BRANCH MODAL ============ -->
@@ -603,8 +616,14 @@ function parseDate(s){
   if(m){ let y = +m[3]; if(y<100) y += 2000; const d = new Date(y, +m[2]-1, +m[1]); return isNaN(d) ? null : d; }
   m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
   if(m){ return new Date(+m[1], +m[2]-1, +m[3]); }
-  m = s.match(/^(\d{1,2})[-\s]([A-Za-z]{3})[A-Za-z]*[-\s,]+(\d{2,4})/);
-  if(m){ const mi = MON.findIndex(x=>x.toLowerCase()===m[2].toLowerCase()); if(mi>=0){ let y=+m[3]; if(y<100) y+=2000; return new Date(y,mi,+m[1]); } }
+  const monIdx = w => { w = w.toLowerCase(); const full = ['january','february','march','april','may','june','july','august','september','october','november','december']; const i = full.findIndex(f=>f===w || f.slice(0,3)===w || (w.length>=3 && f.startsWith(w))); return i; };
+  const yr = y => { if(y===undefined||y==='') return new Date().getFullYear(); y = +y; return y<100 ? y+2000 : y; };
+  m = s.match(/^(\d{1,2})(?:st|nd|rd|th)?[-\s\/.]+([A-Za-z]{3,9})\.?(?:[-\s,\/.]+(\d{2,4}))?$/);
+  if(m){ const mi = monIdx(m[2]); if(mi>=0) return new Date(yr(m[3]), mi, +m[1]); return null; }
+  m = s.match(/^([A-Za-z]{3,9})\.?[-\s]+(\d{1,2})(?:st|nd|rd|th)?(?:[-\s,]+(\d{2,4}))?$/);
+  if(m){ const mi = monIdx(m[1]); if(mi>=0) return new Date(yr(m[3]), mi, +m[2]); return null; }
+  m = s.match(/^(\d{1,2})[\/.](\d{1,2})$/);
+  if(m && +m[2]<=12) return new Date(new Date().getFullYear(), +m[2]-1, +m[1]);
   return null;
 }
 function parseCSV(text){
@@ -620,7 +639,13 @@ function parseCSV(text){
   if(f!=='' || row.length){ row.push(f); rows.push(row); }
   return rows;
 }
-const codeOf = s => { const m = String(s ?? '').trim().match(/^(\d{1,2})\s*[-–_ ]/); return m ? m[1].padStart(2,'0') : null; };
+const normName = s => String(s ?? '').toUpperCase().replace(/[^A-Z0-9]/g,'');
+const codeOf = s => {
+  const t = String(s ?? '').trim(); if(parseDate(t)) return null; const m = t.match(/^(\d{1,2})\s*[-–_ ]/); if(m) return m[1].padStart(2,'0');
+  const n = normName(t); if(n.length < 4) return null;
+  const hit = BRANCHES.find(([c,nm]) => normName(nm)===n || normName(c+nm)===n);
+  return hit ? hit[0] : null;
+};
 
 function pct(a,c){ return c>0 ? a/c*100 : null; }
 function fmtPct(a,c){ if(c>0) return Math.round(a/c*100)+'%'; return a>0 ? 'Bonus' : '—'; }
@@ -672,10 +697,14 @@ function parsePlan(rows){
     const head = rows[h];
     const hc = head.map(codeOf);
     if(hc.filter(Boolean).length >= 5){ // branches across, dates down
-      rows.slice(h+1).forEach(r => { const d = parseDate(r[0]); if(!d) return; hc.forEach((c,i)=>{ if(c && i>0 && String(r[i]??'').trim()!=='') put(dkey(d), c, num(r[i])); }); });
+      rows.slice(h+1).forEach(r => { let d = parseDate(r[0]); if(!d && /^\s*\d{1,2}\s*$/.test(String(r[0])) && +r[0]>=1 && +r[0]<=31){ const n = new Date(); d = new Date(n.getFullYear(), n.getMonth(), +r[0]); } if(!d) return; hc.forEach((c,i)=>{ if(c && i>0 && String(r[i]??'').trim()!=='') put(dkey(d), c, num(r[i])); }); });
       break;
     }
-    const hd = head.map(parseDate);
+    let hd = head.map(parseDate);
+    if(hd.filter(Boolean).length < 2){ // plain day numbers 1..31 across the top → current month
+      const dn = head.map(x => /^\s*\d{1,2}\s*$/.test(String(x)) && +x>=1 && +x<=31 ? +x : null);
+      if(dn.filter(Boolean).length >= 20){ const n = new Date(); hd = dn.map(d => d ? new Date(n.getFullYear(), n.getMonth(), d) : null); }
+    }
     if(hd.filter(Boolean).length >= 2){ // dates across, branches down
       rows.slice(h+1).forEach(r => { const c = codeOf(r[0]); if(!c) return; hd.forEach((d,i)=>{ if(d && String(r[i]??'').trim()!=='') put(dkey(d), c, num(r[i])); }); });
       break;
@@ -761,20 +790,24 @@ function forecast(v){
   const plan = state.plan[v]; const codes = new Set(scopeBranches().map(b=>b.code));
   let planned = 0, planDays = 0;
   const futureCommit = rem.map(k => { if(plan && plan[k]){ planDays++; const s = Object.entries(plan[k]).reduce((t,[c,val])=>t+(codes.has(c)?val:0),0); planned += s; return s; } return crate; });
-  const projC = C + futureCommit.reduce((s,x)=>s+x,0);
+  const planMonth = {}; let planMonthTotal = null;
+  if(plan) Object.entries(plan).forEach(([k,row]) => { const d = fromKey(k); if(d.getFullYear()===y && d.getMonth()===m){ const s = Object.entries(row).reduce((t,[c,val])=>t+(codes.has(c)?val:0),0); planMonth[k] = s; planMonthTotal = (planMonthTotal||0) + s; } });
+  const projC = planMonthTotal!==null ? planMonthTotal : C + futureCommit.reduce((s,x)=>s+x,0);
   const projA = A + blended*rem.length;
   const lowA = A + Math.max(0,blended-sd)*rem.length, highA = A + (blended+sd)*rem.length;
   const req = rem.length ? Math.max(0,(projC - A)/rem.length) : 0;
   // chart series
   const labels = [], act = [], proj = [], lo = [], hi = [], tgt = [];
   let ca=0, cc=0, pa=A, pl=A, ph=A, pc=C, ri=0;
+  let pcum = 0; if(planMonthTotal!==null) Object.entries(planMonth).forEach(([k,v2]) => { if(k<dkey(first)) pcum += v2; });
   for(let d=new Date(first); d<=monthEnd; d.setDate(d.getDate()+1)){
     const k = dkey(d); labels.push(k);
-    if(k<=f.to){ const o = dayMap[k]; if(o){ ca+=o[VV.a]; cc+=o[VV.c]; } act.push(ca); tgt.push(cc);
+    if(planMonthTotal!==null) pcum += planMonth[k]||0;
+    if(k<=f.to){ const o = dayMap[k]; if(o){ ca+=o[VV.a]; cc+=o[VV.c]; } act.push(ca); tgt.push(planMonthTotal!==null ? pcum : cc);
       if(k===f.to){ proj.push(A); lo.push(A); hi.push(A); } else { proj.push(null); lo.push(null); hi.push(null); } }
-    else { act.push(null); if(isWD(d)){ pa+=blended; pl+=Math.max(0,blended-sd); ph+=blended+sd; pc+=futureCommit[ri++]||0; } proj.push(pa); lo.push(pl); hi.push(ph); tgt.push(pc); }
+    else { act.push(null); if(isWD(d)){ pa+=blended; pl+=Math.max(0,blended-sd); ph+=blended+sd; pc+=futureCommit[ri++]||0; } proj.push(pa); lo.push(pl); hi.push(ph); tgt.push(planMonthTotal!==null ? pcum : pc); }
   }
-  return {A,C,elapsed,rem:rem.length,rate,crate,ew,sd,blended,slope,projA,projC,lowA,highA,req,planDays,planned,
+  return {A,C,elapsed,rem:rem.length,rate,crate,ew,sd,blended,slope,projA,projC,lowA,highA,req,planDays,planned,planMonthTotal,
     projPct: projC>0 ? projA/projC*100 : null, month:`${MON[m]} ${y}`, labels,act,proj,lo,hi,tgt, partial: f.from>dkey(first)};
 }
 
@@ -1131,7 +1164,7 @@ function renderVertical(v){
     <div class="card reveal"><div class="card-head"><div><h3>Forecast Summary</h3><div class="sub">${fc?`${fc.elapsed} working day${fc.elapsed>1?'s':''} tracked · ${fc.rem} remaining`:'Not enough data'}</div></div></div>
       ${fc ? `<div class="fc-stats">
         <div class="fc-stat"><small>Projected units</small><b style="color:${col}">${fmt(Math.round(fc.projA))}</b><span>range ${fmt(Math.round(fc.lowA))}–${fmt(Math.round(fc.highA))}</span></div>
-        <div class="fc-stat"><small>Projected commit</small><b>${fmt(Math.round(fc.projC))}</b><span>${fc.planDays?`${fc.planDays} days from commitment sheet`:'run-rate based'}</span></div>
+        <div class="fc-stat"><small>Projected commit</small><b>${fmt(Math.round(fc.projC))}</b><span>${fc.planMonthTotal!==null?'month total · commitment sheet':'run-rate based'}</span></div>
         <div class="fc-stat"><small>Projected ach %</small><b>${fc.projPct===null?'—':Math.round(fc.projPct)+'%'}</b><span>${fc.projPct===null?'':status(fc.projA,fc.projC).t}</span></div>
         <div class="fc-stat"><small>Required / day</small><b>${fc.rem? fc.req.toFixed(1):'—'}</b><span>current ${fc.rate.toFixed(1)}/day</span></div>
       </div>
@@ -1357,63 +1390,88 @@ function shrink(file){ return new Promise(res => { const r = new FileReader(); r
   cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); res(cv.toDataURL('image/jpeg',.78)); }; im.src = r.result; }; r.readAsDataURL(file); }); }
 
 /* =====================================================================
-   TODAY PANEL
+   TODAY'S ASK  —  today's commitment (commitment sheet)
+                   + carry-forward balance (commitment till yesterday − achieved till yesterday)
    ===================================================================== */
 const ddmmyyyy = k => { const d = fromKey(k); return `${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()}`; };
-function todayInfo(codes){
-  const tk = dkey(new Date());
-  const inScope = r => codes.has(r.code);
-  const planSum = p => p ? Object.entries(p).reduce((s,[c,v])=>s+(codes.has(c)?v:0),0) : 0;
-  let key = null, fromPlan = false, t, zoneRows;
-  if(state.dates.includes(tk)) key = tk;
-  else if((state.plan.tyre && state.plan.tyre[tk]) || (state.plan.battery && state.plan.battery[tk])){ key = tk; fromPlan = true; }
-  else key = state.dates.at(-1);
-  if(!key) return null;
-  const recs = state.data.filter(r=>r.key===key && inScope(r));
-  if(fromPlan){
-    t = {tc:planSum(state.plan.tyre&&state.plan.tyre[tk]), bc:planSum(state.plan.battery&&state.plan.battery[tk]), ta:0, ba:0};
-    zoneRows = ZONES.map(z=>{ const zc = new Set([...codes].filter(c=>BMAP[c]&&BMAP[c].zone===z)); const ps = p => p ? Object.entries(p).reduce((s,[c,v])=>s+(zc.has(c)?v:0),0) : 0;
-      return {zone:z, tc:ps(state.plan.tyre&&state.plan.tyre[tk]), bc:ps(state.plan.battery&&state.plan.battery[tk]), ta:0, ba:0, n:zc.size}; });
-  } else {
-    t = sum(recs);
-    zoneRows = ZONES.map(z=>({zone:z, ...sum(recs.filter(r=>BMAP[r.code].zone===z)), n:[...codes].filter(c=>BMAP[c]&&BMAP[c].zone===z).length}));
-  }
-  const d = fromKey(key);
-  const mtd = sum(state.data.filter(r=>inScope(r) && r.d.getFullYear()===d.getFullYear() && r.d.getMonth()===d.getMonth() && r.key<=key));
-  if(fromPlan){ mtd.tc += t.tc; mtd.bc += t.bc; }
-  const committedBranches = fromPlan ? new Set([...Object.entries((state.plan.tyre||{})[tk]||{}),...Object.entries((state.plan.battery||{})[tk]||{})].filter(([c,v])=>v>0&&codes.has(c)).map(([c])=>c)).size
-                                     : recs.filter(r=>r.tc>0||r.bc>0).length;
-  return {key, isToday:key===tk, fromPlan, t, mtd, zoneRows:zoneRows.filter(z=>z.n>0), committedBranches};
+function askInfo(v, codes){
+  const VV = V[v], now = new Date(), tk = dkey(now), y = now.getFullYear(), m = now.getMonth();
+  const inMonth = k => { const d = fromKey(k); return d.getFullYear()===y && d.getMonth()===m; };
+  const plan = state.plan[v];
+  const hasPlan = !!plan && Object.keys(plan).some(inMonth);
+  const per = {}; codes.forEach(c => per[c] = {code:c, planToday:0, planPrev:0, planMonth:0, achPrev:0, achToday:0, mPrev:0, mToday:0});
+  if(hasPlan) Object.entries(plan).forEach(([k,row]) => { if(!inMonth(k)) return; Object.entries(row).forEach(([c,val]) => { const o = per[c]; if(!o) return; o.planMonth += val; if(k<tk) o.planPrev += val; else if(k===tk) o.planToday += val; }); });
+  state.data.forEach(r => { const o = per[r.code]; if(!o || !inMonth(r.key)) return;
+    if(r.key<tk){ o.achPrev += r[VV.a]; o.mPrev += r[VV.c]; } else if(r.key===tk){ o.achToday += r[VV.a]; o.mToday += r[VV.c]; } });
+  const rows = Object.values(per).map(o => { if(!hasPlan){ o.planPrev = o.mPrev; o.planToday = o.mToday; o.planMonth = null; }
+    o.carry = Math.max(0, o.planPrev - o.achPrev); o.ask = o.planToday + o.carry; o.left = Math.max(0, o.ask - o.achToday); return o; });
+  const agg = list => { const T = {planToday:0, planPrev:0, planMonth:hasPlan?0:null, achPrev:0, achToday:0};
+    list.forEach(o => { T.planToday += o.planToday; T.planPrev += o.planPrev; T.achPrev += o.achPrev; T.achToday += o.achToday; if(hasPlan) T.planMonth += o.planMonth; });
+    T.carry = Math.max(0, T.planPrev - T.achPrev); T.ask = T.planToday + T.carry; T.left = Math.max(0, T.ask - T.achToday);
+    T.mtdAch = T.achPrev + T.achToday; T.monthBal = hasPlan ? Math.max(0, T.planMonth - T.mtdAch) : null; return T; };
+  let wd = 0; const end = new Date(y, m+1, 0); for(let d = new Date(y, m, now.getDate()); d<=end; d.setDate(d.getDate()+1)) if(isWD(d)) wd++;
+  const T = agg(rows);
+  T.perDay = T.monthBal!==null && wd ? T.monthBal / wd : null;
+  const zones = ZONES.map(z => ({zone:z, ...agg(rows.filter(o=>BMAP[o.code] && BMAP[o.code].zone===z)), n:rows.filter(o=>BMAP[o.code] && BMAP[o.code].zone===z).length})).filter(z=>z.n);
+  return {v, tk, hasPlan, rows, T, zones, wd, todayInSheet: state.dates.includes(tk), isWorkday:isWD(now)};
+}
+function planBadge(){
+  const ok = ['tyre','battery'].map(v => { const p = state.plan[v]; const n = p ? Object.keys(p).length : 0; return `${V[v].name}: ${n ? `✓ ${n} days` : '✕ not found'}`; });
+  const good = state.plan.tyre && state.plan.battery;
+  return `<span class="pill ${good?'good':'warn'}" title="Commitment tabs: “${CONFIG.SHEETS.tyre}” and “${CONFIG.SHEETS.battery}”">Commitment sheet · ${ok.join(' · ')}</span>`;
+}
+function askBlock(I){
+  const c = COL(), v = I.v, VV = V[v], col = v==='tyre' ? c.tyre : c.bat, T = I.T;
+  const done = T.ask>0 ? Math.min(100, T.achToday/T.ask*100) : (T.achToday>0?100:0);
+  return `<div class="td-v" style="--vc:${col}"><div class="tv-h">${v==='tyre'?tyreIcon(30):batIcon(30)} ${VV.name} <span class="ask-tag" style="background:color-mix(in srgb,${col} 16%,transparent);color:${col}">Today's Ask</span></div>
+    <div class="ask-big"><b style="color:${col}">${fmt(T.ask)}</b><span>units needed today</span></div>
+    <div class="ask-eq"><span><small>Today commit</small><b>${fmt(T.planToday)}</b></span><i>+</i><span><small>Carry forward</small><b>${fmt(T.carry)}</b></span><i>=</i><span><small>Ask</small><b>${fmt(T.ask)}</b></span></div>
+    <div class="ask-cf">Till yesterday: committed <b>${fmt(T.planPrev)}</b> · achieved <b>${fmt(T.achPrev)}</b> → balance <b>${fmt(T.carry)}</b></div>
+    <div class="tv-nums" style="margin-top:10px"><div><small>Achieved today</small><b style="color:${col}">${I.todayInSheet?fmt(T.achToday):'0'}</b></div><div><small>Still needed</small><b style="color:${T.left>0?c.bad:c.good}">${fmt(T.left)}</b></div><div><small>Done</small><b>${Math.round(done)}%</b></div></div>
+    <div class="bar" style="margin-top:8px"><i data-w="${done}%" style="background:${col}"></i></div>
+    <div class="tv-mtd"><span>Month commit <b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></span><span>MTD ach <b>${fmt(T.mtdAch)}</b></span><span>Balance <b>${T.monthBal===null?'—':fmt(T.monthBal)}</b></span></div>
+    ${T.perDay!==null?`<div class="ask-cf" style="margin-top:6px">Need <b>${T.perDay.toFixed(1)}</b>/day over the ${I.wd} working day${I.wd===1?'':'s'} left (incl. today) to hit the month commitment</div>`:''}
+  </div>`;
 }
 function todayStrip(){
-  const codes = new Set(scopeBranches().map(b=>b.code)); const T = todayInfo(codes); if(!T) return '';
-  const c = COL();
-  const block = v => { const VV = V[v], a = T.t[VV.a], cm = T.t[VV.c], col = v==='tyre'?c.tyre:c.bat;
-    return `<div class="td-v" style="--vc:${col}"><div class="tv-h">${v==='tyre'?tyreIcon(30):batIcon(30)} ${VV.name}</div>
-      <div class="tv-nums"><div><small>${T.isToday?'Today':'Day'} commit</small><b>${fmt(cm)}</b></div>
-      <div><small>Achieved</small><b style="color:${col}">${T.fromPlan?'—':fmt(a)}</b></div>
-      <div><small>Ach %</small><b>${T.fromPlan?'—':fmtPct(a,cm)}</b></div></div>
-      <div class="bar" style="margin-top:10px"><i data-w="${Math.min(100,pct(a,cm)||0)}%" style="background:${col}"></i></div>
-      <div class="tv-mtd"><span>MTD commit <b>${fmt(T.mtd[VV.c])}</b></span><span>MTD achieved <b>${fmt(T.mtd[VV.a])}</b></span><span><b>${fmtPct(T.mtd[VV.a],T.mtd[VV.c])}</b></span></div></div>`; };
+  const codes = new Set(scopeBranches().map(b=>b.code));
+  const It = askInfo('tyre', codes), Ib = askInfo('battery', codes);
+  const tk = It.tk;
+  const branchRows = scopeBranches().map(b => ({b, t:It.rows.find(o=>o.code===b.code), y:Ib.rows.find(o=>o.code===b.code)}));
+  const cellsFor = o => `<td class="num">${fmt(o.planToday)}</td><td class="num">${fmt(o.carry)}</td><td class="num"><b>${fmt(o.ask)}</b></td><td class="num">${fmt(o.achToday)}</td><td class="num" style="color:${o.left>0?'var(--bad)':'var(--good)'};font-weight:700">${fmt(o.left)}</td>`;
+  let lastZ = null, brHtml = '';
+  branchRows.forEach(({b,t,y}) => { if(b.zone!==lastZ){ lastZ = b.zone; const zt = It.zones.find(z=>z.zone===b.zone), zb = Ib.zones.find(z=>z.zone===b.zone);
+      brHtml += `<tr class="zone-row"><td>Zone ${b.zone} · Cluster ${b.cluster}</td>${cellsFor(zt)}${cellsFor(zb)}</tr>`; }
+    brHtml += `<tr><td><span class="bname" data-branch="${b.code}">${esc(b.label)}</span></td>${cellsFor(t)}${cellsFor(y)}</tr>`; });
+  const warn = !It.hasPlan || !Ib.hasPlan ? `<div class="td-note">⚠ ${[!It.hasPlan&&'Tyre',!Ib.hasPlan&&'Battery'].filter(Boolean).join(' & ')} commitment for ${MON[new Date().getMonth()]} couldn't be read from the commitment sheet — using commitments from the daily sheet instead. Check the tab names in CONFIG.SHEETS and that the sheet is shared “Anyone with the link”.</div>` : '';
   return `<div class="card reveal" style="margin-bottom:16px">
-    <div class="td-head"><div><h3>📅 ${T.isToday?"Today's Commitment & Achievement":'Latest Day Commitment & Achievement'}</h3>
-      <div class="sub">${scopeText()} · ${T.committedBranches} branch${T.committedBranches===1?'':'es'} with commitment${T.isToday?'':` · today's (${shortD(dkey(new Date()))}) entries are not in the sheet yet`}${T.fromPlan?' · from commitment sheet (achievement pending)':''}</div></div>
-      <span class="td-date">${longD(T.key)}</span></div>
-    <div class="today">${block('tyre')}${block('battery')}
-      <div class="td-v td-zone" style="--vc:var(--commit)"><div class="tv-h">🗺️ By Zone</div>
-        <table><thead><tr><th>Zone</th><th class="num">Tyre C</th><th class="num">Tyre A</th><th class="num">Bat C</th><th class="num">Bat A</th></tr></thead>
-        <tbody>${T.zoneRows.map(z=>`<tr><td><b style="color:${ZCOL[z.zone]}">Zone ${z.zone}</b> <span class="tag">C${CLUSTER_OF_ZONE[z.zone]}</span></td><td class="num">${fmt(z.tc)}</td><td class="num">${T.fromPlan?'—':fmt(z.ta)}</td><td class="num">${fmt(z.bc)}</td><td class="num">${T.fromPlan?'—':fmt(z.ba)}</td></tr>`).join('')}</tbody>
-        <tfoot><tr><td>Total</td><td class="num">${fmt(T.t.tc)}</td><td class="num">${T.fromPlan?'—':fmt(T.t.ta)}</td><td class="num">${fmt(T.t.bc)}</td><td class="num">${T.fromPlan?'—':fmt(T.t.ba)}</td></tr></tfoot></table></div>
-    </div></div>`;
+    <div class="td-head"><div><h3>🎯 Today's Ask · ${longD(tk)}</h3>
+      <div class="sub">${scopeText()} · Today's commitment + carry-forward balance (commitment till yesterday − achieved till yesterday)${It.isWorkday?'':' · today is a Sunday'}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${planBadge()}<span class="td-date">${ddmmyyyy(tk)}</span></div></div>
+    <div class="today">${askBlock(It)}${askBlock(Ib)}
+      <div class="td-v td-zone" style="--vc:var(--commit)"><div class="tv-h">🗺️ Today's Ask by Zone</div>
+        <table><thead><tr><th>Zone</th><th class="num">Tyre ask</th><th class="num">Done</th><th class="num">Bat ask</th><th class="num">Done</th></tr></thead>
+        <tbody>${It.zones.map((z,i)=>{ const zb = Ib.zones[i]; return `<tr><td><b style="color:${ZCOL[z.zone]}">Zone ${z.zone}</b> <span class="tag">C${CLUSTER_OF_ZONE[z.zone]}</span></td><td class="num"><b>${fmt(z.ask)}</b></td><td class="num">${fmt(z.achToday)}</td><td class="num"><b>${fmt(zb.ask)}</b></td><td class="num">${fmt(zb.achToday)}</td></tr>`; }).join('')}</tbody>
+        <tfoot><tr><td>Total</td><td class="num">${fmt(It.T.ask)}</td><td class="num">${fmt(It.T.achToday)}</td><td class="num">${fmt(Ib.T.ask)}</td><td class="num">${fmt(Ib.T.achToday)}</td></tr></tfoot></table>
+        <div class="td-note">Cluster 1: Tyre ${fmt(It.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===1).reduce((s,z)=>s+z.ask,0))} · Battery ${fmt(Ib.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===1).reduce((s,z)=>s+z.ask,0))}<br>Cluster 2: Tyre ${fmt(It.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===2).reduce((s,z)=>s+z.ask,0))} · Battery ${fmt(Ib.zones.filter(z=>CLUSTER_OF_ZONE[z.zone]===2).reduce((s,z)=>s+z.ask,0))}<br><small>Zone/cluster asks are calculated on the group's own balance.</small></div></div>
+    </div>${warn}
+    <details class="ask-det"><summary>View branch-wise Today's Ask (${branchRows.length} branches)</summary>
+      <div class="tbl-wrap mt"><table><thead><tr class="grp"><th></th><th colspan="5" style="color:var(--tyre)">⚙️ TYRE</th><th colspan="5" style="color:var(--bat)">🔋 BATTERY</th></tr>
+      <tr><th>Branch</th>${'<th class="num">Today commit</th><th class="num">Carry fwd</th><th class="num">Ask</th><th class="num">Done</th><th class="num">Still needed</th>'.repeat(2)}</tr></thead>
+      <tbody>${brHtml}</tbody><tfoot><tr><td>Total</td>${cellsFor(It.T)}${cellsFor(Ib.T)}</tr></tfoot></table></div>
+      <div class="td-note">Branch carry-forward uses each branch's own balance, so branch values may add up to more than the group total (over-achieving branches don't offset others).</div></details>
+  </div>`;
 }
 function landingToday(){
-  const codes = new Set(Object.keys(BMAP)); const T = todayInfo(codes); if(!T) return '';
-  const card = v => { const VV = V[v], a = T.t[VV.a], cm = T.t[VV.c];
-    return `<div class="lt-card"><div class="lt-t">${v==='tyre'?tyreIcon(24):batIcon(24)} ${VV.name}</div>
-      <div class="lt-row"><div><small>Commit</small><b>${fmt(cm)}</b></div><div><small>Achieved</small><b style="color:${v==='tyre'?'#ff9a63':'#4fe3ad'}">${T.fromPlan?'—':fmt(a)}</b></div><div><small>Ach %</small><b>${T.fromPlan?'—':fmtPct(a,cm)}</b></div></div>
-      <div class="lt-mtd">Month total commit <b>${fmt(T.mtd[VV.c])}</b> · achieved <b>${fmt(T.mtd[VV.a])}</b> (${fmtPct(T.mtd[VV.a],T.mtd[VV.c])})</div></div>`; };
-  return `<div class="lt-h"><span><b>📅 ${T.isToday?'Today':'Latest day'} · ${longD(T.key)}</b></span><span>${T.isToday?`${T.committedBranches} branches committed`:"Today's entries not in the sheet yet"}</span></div>
-    <div class="lt-grid">${card('tyre')}${card('battery')}</div>`;
+  const codes = new Set(Object.keys(BMAP));
+  const It = askInfo('tyre', codes), Ib = askInfo('battery', codes);
+  const card = I => { const v = I.v, T = I.T, hi = v==='tyre' ? '#ff9a63' : '#4fe3ad';
+    return `<div class="lt-card"><div class="lt-t">${v==='tyre'?tyreIcon(24):batIcon(24)} ${V[v].name} · Today's Ask</div>
+      <div class="lt-ask"><b style="color:${hi}">${fmt(T.ask)}</b><span>= today commit <b>${fmt(T.planToday)}</b> + carry fwd <b>${fmt(T.carry)}</b></span></div>
+      <div class="lt-row"><div><small>Done today</small><b>${fmt(T.achToday)}</b></div><div><small>Still needed</small><b>${fmt(T.left)}</b></div><div><small>Month commit</small><b>${T.planMonth===null?'—':fmt(T.planMonth)}</b></div></div>
+      <div class="lt-mtd">MTD achieved <b>${fmt(T.mtdAch)}</b>${T.monthBal!==null?` · month balance <b>${fmt(T.monthBal)}</b> · <b>${T.perDay.toFixed(1)}</b>/day needed`:''}</div></div>`; };
+  return `<div class="lt-h"><span><b>🎯 Today's Ask · ${longD(It.tk)}</b></span><span>Commitment + carry-forward balance</span></div>
+    <div class="lt-grid">${card(It)}${card(Ib)}</div>`;
 }
 
 /* =====================================================================
@@ -1479,8 +1537,8 @@ function renderLanding(){
   const mtd = state.data.filter(r=>r.d.getFullYear()===y.getFullYear() && r.d.getMonth()===y.getMonth());
   const t = sum(mtd);
   $('#lStats').innerHTML = [
-    ['Tyre MTD', fmtPct(t.ta,t.tc), `${fmt(t.ta)}/${fmt(t.tc)}`],
-    ['Battery MTD', fmtPct(t.ba,t.bc), `${fmt(t.ba)}/${fmt(t.bc)}`],
+    ...['tyre','battery'].map(v => { const T = askInfo(v, new Set(Object.keys(BMAP))).T;
+      return T.planMonth!==null ? [V[v].name+' Month', fmtPct(T.mtdAch,T.planMonth), `${fmt(T.mtdAch)} of ${fmt(T.planMonth)} committed`] : [V[v].name+' MTD', fmtPct(v==='tyre'?t.ta:t.ba, v==='tyre'?t.tc:t.bc), `${fmt(v==='tyre'?t.ta:t.ba)}/${fmt(v==='tyre'?t.tc:t.bc)}`]; }),
     ['Branches', Object.keys(BMAP).length, '4 zones · 2 clusters'],
     ['Latest data', latest? shortD(latest):'—', latest? DOW[fromKey(latest).getDay()]:'']
   ].map(([l,v,s])=>`<div class="l-stat"><small>${l}</small><b>${v}</b><small style="text-transform:none;letter-spacing:0">${s}</small></div>`).join('');
