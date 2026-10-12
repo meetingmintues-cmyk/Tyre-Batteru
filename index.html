@@ -272,30 +272,6 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
 .l-theme .i-sun{display:none}
 :root[data-theme="dark"] .l-theme .i-sun{display:block}:root[data-theme="dark"] .l-theme .i-moon{display:none}
 /* ---- LIGHT landing ---- */
-:root[data-theme="light"] .landing{background:radial-gradient(1100px 600px at 5% -10%,rgba(46,49,146,.16),transparent 60%),radial-gradient(900px 600px at 110% 15%,rgba(237,28,36,.13),transparent 60%),linear-gradient(180deg,#f7f8fd,#eef1f9);color:#0d1430}
-:root[data-theme="light"] .landing::before{background-image:linear-gradient(rgba(20,30,80,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,30,80,.05) 1px,transparent 1px)}
-:root[data-theme="light"] .l-logo{box-shadow:0 12px 34px rgba(30,40,100,.15)}
-:root[data-theme="light"] .l-clock{color:#5d6788}:root[data-theme="light"] .l-clock b{color:#0d1430}
-:root[data-theme="light"] .l-theme{background:#fff;border-color:#e2e7f1;color:#2e3192;box-shadow:0 6px 18px rgba(30,40,100,.1)}
-:root[data-theme="light"] .l-kicker{background:#fff;border-color:#e2e7f1;color:#2e3192;box-shadow:0 4px 14px rgba(30,40,100,.06)}
-:root[data-theme="light"] .l-title .tw{background:linear-gradient(90deg,#f05a1a,#ff8a3d);-webkit-background-clip:text;background-clip:text}
-:root[data-theme="light"] .l-title .bw{background:linear-gradient(90deg,#0f9e68,#16c784);-webkit-background-clip:text;background-clip:text}
-:root[data-theme="light"] .l-desc{color:#4a5475}
-:root[data-theme="light"] .l-stat,:root[data-theme="light"] .l-today{background:#fff;border-color:#e2e7f1;box-shadow:0 10px 30px rgba(30,40,100,.07)}
-:root[data-theme="light"] .l-stat small,:root[data-theme="light"] .lt-row small{color:#6b7594}
-:root[data-theme="light"] .l-today .lt-h{color:#5d6788}:root[data-theme="light"] .l-today .lt-h b{color:#0d1430}
-:root[data-theme="light"] .lt-card{background:#f5f7fc;border-color:#e2e7f1}
-:root[data-theme="light"] .lt-ask span,:root[data-theme="light"] .lt-mtd{color:#5d6788}
-:root[data-theme="light"] .lt-ask span b,:root[data-theme="light"] .lt-mtd b{color:#0d1430}
-:root[data-theme="light"] .lt-ask b[style*="#ff9a63"]{color:#f05a1a!important}:root[data-theme="light"] .lt-ask b[style*="#4fe3ad"]{color:#0f9e68!important}
-:root[data-theme="light"] .l-go{background:#fff;border-color:#e2e7f1;color:#0d1430;box-shadow:0 8px 22px rgba(30,40,100,.07)}
-:root[data-theme="light"] .l-go small{color:#6b7594}
-:root[data-theme="light"] .l-go.main{background:linear-gradient(135deg,#ed1c24,#2e3192);color:#fff;border:none}:root[data-theme="light"] .l-go.main small{color:rgba(255,255,255,.75)}
-:root[data-theme="light"] .showcase{border-color:#e2e7f1;box-shadow:0 30px 70px rgba(30,40,100,.22)}
-:root[data-theme="light"] .float-badge{background:rgba(255,255,255,.95);border-color:#e2e7f1;color:#0d1430;box-shadow:0 18px 40px rgba(30,40,100,.15)}
-:root[data-theme="light"] .float-badge small{color:#6b7594}
-:root[data-theme="light"] .photo-tools button{color:#4a5475;border-color:#dde2ee;background:#fff}
-:root[data-theme="light"] .l-foot{color:#6b7594}:root[data-theme="light"] .credit{color:#4a5475}
 /* ====================== DAY MATRIX ====================== */
 .mx-wrap{max-height:640px}
 .mx table{font-size:12px;border-collapse:separate;border-spacing:0}
@@ -518,8 +494,7 @@ tfoot td{padding:11px 12px;font-weight:800;background:var(--panel2);position:sti
   <div class="landing">
     <div class="l-top">
       <div class="l-logo" id="logoBig"></div>
-      <div style="display:flex;align-items:center;gap:14px"><div class="l-clock"><b id="lClock">--:--</b><span id="lDate"></span></div>
-        <button class="l-theme" id="lTheme" title="Switch light / dark" aria-label="Switch light or dark mode"><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div>
+      <div style="display:flex;align-items:center;gap:14px"><div class="l-clock"><b id="lClock">--:--</b><span id="lDate"></span></div></div>
     </div>
     <div class="l-body">
       <div>
@@ -1667,7 +1642,7 @@ document.addEventListener('keydown', e => {
 function setTheme(t){ document.documentElement.dataset.theme = t || 'light'; }
 function toggleTheme(){ const cur = document.documentElement.dataset.theme || 'light'; setTheme(cur==='dark'?'light':'dark'); render(); }
 $('#btnTheme').onclick = toggleTheme;
-$('#lTheme').onclick = toggleTheme;
+
 $('#btnFull').onclick = () => { if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); };
 $('#btnPrint').onclick = () => window.print();
 $('#btnRefresh').onclick = async () => { const b = $('#btnRefresh svg'); b.classList.add('spin'); await refresh(); b.classList.remove('spin'); toast(state.source.startsWith('Live')?'Data refreshed':'Could not reach the sheet — showing snapshot'); };
